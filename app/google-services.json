@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "170940666465",
+    "project_id": "kidsapp-318ba",
+    "storage_bucket": "kidsapp-318ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170940666465:android:25783f728b4da757a51020",
+        "android_client_info": {
+          "package_name": "com.example.kidsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "170940666465-p0qm33eb78lslj5vkoncq9pdajoog07k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaDAcYWQrEJJynZpcUzswMVQF9DU0RAnk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "170940666465-p0qm33eb78lslj5vkoncq9pdajoog07k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
