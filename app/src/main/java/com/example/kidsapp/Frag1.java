@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class Frag1 extends Fragment {
-
+    //메인화면
     private View view;
 
     @Nullable
