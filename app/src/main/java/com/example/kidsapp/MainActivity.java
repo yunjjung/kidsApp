@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
         }
-
+        mFirebaseAuth = FirebaseAuth.getInstance(); //빼먹지 말기!
         Button btnLogout = findViewById(R.id.btn_logout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity {
                 //로그아웃
                 mFirebaseAuth.signOut();
 
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                Intent LogoutIntent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(LogoutIntent);
+                //finish();
             }
         });
 
