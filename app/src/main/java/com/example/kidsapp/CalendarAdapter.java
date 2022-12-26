@@ -20,7 +20,7 @@ import java.util.Calendar;
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>{
     ArrayList<LocalDate> dayList;
 
-    OnItemListener onItemListener;//인터페이스 선언
+    //OnItemListener onItemListener;//인터페이스 선언
 
    public CalendarAdapter(ArrayList<LocalDate> dayList){
         this.dayList = dayList;
@@ -46,6 +46,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         }
         else{
             holder.dayText.setText(String.valueOf(day.getDayOfMonth()));
+
+            //현재 날짜 색상 칠하기
+            if(day.equals(CalendarUtil.selectedDate)){
+                holder.parentView.setBackgroundColor(Color.LTGRAY);
+            }
         }
 
         //텍스트 색상 지정
@@ -82,11 +87,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     class CalendarViewHolder extends RecyclerView.ViewHolder{
         //초기화
         TextView dayText;
+        View parentView;
 
         public CalendarViewHolder(@NonNull View itemView){
             super(itemView);
 
             dayText = itemView.findViewById(R.id.dayText);
+            parentView = itemView.findViewById(R.id.parentView);
         }
     }
 
