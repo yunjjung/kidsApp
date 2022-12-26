@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottomMenu);
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener(){
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem){
-                switch (menuItem.getItemId()){
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
                     case R.id.action_home:
                         setFrag(0);
                         break;
@@ -68,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //프래그먼트 교체가 일어나는 실행문
-    private void setFrag(int n){
+    private void setFrag(int n) {
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
-        switch(n){
+        switch (n) {
             case 0:
                 ft.replace(R.id.main, frag1);
                 ft.commit(); //저장
