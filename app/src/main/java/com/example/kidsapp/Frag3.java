@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,7 +42,7 @@ public class Frag3 extends Fragment {
         recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
 
         //current date
-        selectedDate = LocalDate.now();
+        CalendarUtil.selectedDate = LocalDate.now();
 
         //화면 설정
         setMonthView();
@@ -51,7 +52,7 @@ public class Frag3 extends Fragment {
             @Override
             public void onClick(View v) {
                 //현재 월 -1 변수에 담기
-                selectedDate = selectedDate.minusMonths(1);
+                CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1);
                 setMonthView();
             }
         });
@@ -61,7 +62,7 @@ public class Frag3 extends Fragment {
             @Override
             public void onClick(View v) {
                 //현재 월+1 변수에 담기
-                selectedDate = selectedDate.plusMonths(1);
+                CalendarUtil.selectedDate = CalendarUtil.selectedDate.plusMonths(1);
             }
         });
         return view;
@@ -74,14 +75,20 @@ public class Frag3 extends Fragment {
         return date.format(formatter);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String yearMonthFromDate(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월");
+        return date.format(formatter);
+    }
+
     //화면 설정
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setMonthView(){
         //년월 텍스트뷰 셋팅
-        yearMonthText.setText(monthYearFromDate(selectedDate));
-
-        ArrayList<String> dayList = daysInMonthArray(selectedDate);
-
+        yearMonthText.setText(monthYearFromDate(CalendarUtil.selectedDate));
+        //해당 월 날짜 가져오기
+        ArrayList<LocalDate> dayList = daysInMonthArray(CalendarUtil.selectedDate);
+        //어뎁터 데이터 적용
         CalendarAdapter adapter = new CalendarAdapter(dayList);
         //레이아웃 설정(열 7개)
         RecyclerView.LayoutManager manager = new GridLayoutManager(getActivity().getApplicationContext(), 7);
@@ -90,29 +97,40 @@ public class Frag3 extends Fragment {
         //어뎁터 적용.
         recyclerView.setAdapter(adapter);
     }
-
+//날짜 생성
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private ArrayList<String> daysInMonthArray(LocalDate date){
-        ArrayList<String> dayList = new ArrayList<>();
+    private ArrayList<LocalDate> daysInMonthArray(LocalDate date){
+        ArrayList<LocalDate> dayList = new ArrayList<>();
         YearMonth yearMonth = YearMonth.from(date);
 
         //해당 월 마지막 날짜 가져오기
         int lastDay = yearMonth.lengthOfMonth();
 
         //해당 월의 첫번째 날 가져오기
-        LocalDate firstDay = selectedDate.withDayOfMonth(1);
+        LocalDate firstDay = CalendarUtil.selectedDate.withDayOfMonth(1);
 
         //첫번째 날 요일 가져오기(월:1, 일:7)
-        int daysOfWeek = firstDay.getDayOfWeek().getValue();
+        int dayOfWeek = firstDay.getDayOfWeek().getValue();
+
+        //날짜 생성
         for(int i = 1; i < 42; i++){
-            if(i <= daysOfWeek || i > lastDay + daysOfWeek){
-                dayList.add("");
+            if(i <= dayOfWeek || i > lastDay + dayOfWeek){
+                dayList.add(null);
             }
             else{
-                dayList.add(String.valueOf(i - daysOfWeek));
+                //dayList.add(String.valueOf(i - dayOfWeek));
+                dayList.add(LocalDate.of(CalendarUtil.selectedDate.getYear(), CalendarUtil.selectedDate.getMonth(), i- dayOfWeek));
             }
         }
         return dayList;
 
     }
+//
+//    //날짜 어뎁터에서 넘긴 데이터를 받는 메서드
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    @Override
+//    public void onItemClick(String dayText){
+//        String yearMonDay = yearMonthFromDate(selectedDate) + "" + dayText + "일";
+//        Toast.makeText(this, yearMonDay, Toast.LENGTH_SHORT).show();
+//    }
 }

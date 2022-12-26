@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:padding="8dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/parentView">
 
     //텍스트 뷰에 날짜가 들어감.
     <TextView
