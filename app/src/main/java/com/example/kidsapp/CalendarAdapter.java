@@ -46,9 +46,36 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         Calendar dateCalendar = Calendar.getInstance();
         dateCalendar.setTime(monthDay);
 
+        //현재 년 월
+        int currentDay = CalendarUtil.selectedDate.get(Calendar.DAY_OF_MONTH);
+        int currentMonth = CalendarUtil.selectedDate.get(Calendar.MONTH)+1;
+        int currentYear = CalendarUtil.selectedDate.get(Calendar.YEAR);
+
+        //넘어온 데이터
+        int displayDay = dateCalendar.get(Calendar.DAY_OF_MONTH);
+        int displayMonth = dateCalendar.get(Calendar.MONTH)+1;
+        int displayYear = dateCalendar.get(Calendar.YEAR);
+
+
+        //비교해서 년, 월 같으면 진한색 아니면 연한색 변경
+        if(displayMonth==currentMonth && displayYear == currentYear){
+            holder.parentView.setBackgroundColor((Color.parseColor("#FAF4C0")));
+            //날짜까지 맞으면 색상 표시
+            holder.itemView.setBackgroundColor(Color.parseColor("#FAF4C0"));
+            //현재 날짜에 색상 표시
+            if(displayDay == currentDay){
+                holder.parentView.setBackgroundColor((Color.parseColor("#FAED7D")));
+                holder.itemView.setBackgroundColor((Color.parseColor("#FAED7D")));
+            }
+        }
+        else{
+            holder.parentView.setBackgroundColor(Color.parseColor("#F6F6F6"));
+        }
+
         //날짜 변수에 담기
         int dayNo = dateCalendar.get(Calendar.DAY_OF_MONTH);
         holder.dayText.setText(String.valueOf(dayNo));
+
 
 //        if(day == null){
 //            holder.dayText.setText("");

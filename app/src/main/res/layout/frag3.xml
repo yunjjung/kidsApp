@@ -9,7 +9,9 @@
         android:layout_height="wrap_content"
         android:text="🙍‍♂My Page🙎‍♀"
         android:gravity="center"
-        android:textSize="20dp"/>
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/kotra"/>
 
 <!--    <CalendarView-->
 <!--        android:layout_marginTop="5dp"-->
@@ -35,7 +37,9 @@
             android:text="2022년 12월"
             android:textAlignment="center"
             android:layout_gravity="center"
-            android:textSize="20dp"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:fontFamily="@font/kotra"
             />
 
         <ImageButton
@@ -51,30 +55,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="일"
-            android:textSize="17dp"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:textAlignment="center"
-            android:textColor="@color/red"/>
+            android:textColor="@color/red"
+            android:fontFamily="@font/kotra" />
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="월"
-            android:textSize="17dp"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:textAlignment="center"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            android:fontFamily="@font/kotra"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/kotra"
             android:text="화"
-            android:textSize="17dp"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@android:color/black"/>
@@ -83,8 +91,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/kotra"
             android:text="수"
-            android:textSize="17dp"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@android:color/black"/>
@@ -92,8 +101,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/kotra"
             android:text="목"
-            android:textSize="17dp"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@android:color/black"/>
@@ -101,8 +111,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/kotra"
             android:text="금"
-            android:textSize="17dp"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@android:color/black"/>
@@ -110,8 +121,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/kotra"
             android:text="토"
-            android:textSize="17dp"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@color/blue"/>
