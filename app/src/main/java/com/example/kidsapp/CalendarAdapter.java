@@ -15,14 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 //화면과 데이터를 연결해주는 클래스
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>{
-    ArrayList<LocalDate> dayList;
+    ArrayList<Date> dayList;
 
     //OnItemListener onItemListener;//인터페이스 선언
 
-   public CalendarAdapter(ArrayList<LocalDate> dayList){
+   public CalendarAdapter(ArrayList<Date> dayList){
         this.dayList = dayList;
         //this.onItemListener = onItemListener;
     }
@@ -39,19 +40,27 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     @Override
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         //날짜 변수에 담기
-        LocalDate day = dayList.get(position);
+        Date monthDay = dayList.get(position);
 
-        if(day == null){
-            holder.dayText.setText("");
-        }
-        else{
-            holder.dayText.setText(String.valueOf(day.getDayOfMonth()));
+        //달력 초기화
+        Calendar dateCalendar = Calendar.getInstance();
+        dateCalendar.setTime(monthDay);
 
-            //현재 날짜 색상 칠하기
-            if(day.equals(CalendarUtil.selectedDate)){
-                holder.parentView.setBackgroundColor(Color.LTGRAY);
-            }
-        }
+        //날짜 변수에 담기
+        int dayNo = dateCalendar.get(Calendar.DAY_OF_MONTH);
+        holder.dayText.setText(String.valueOf(dayNo));
+
+//        if(day == null){
+//            holder.dayText.setText("");
+//        }
+//        else{
+//            holder.dayText.setText(String.valueOf(day.getDayOfMonth()));
+//
+//            //현재 날짜 색상 칠하기
+//            if(day.equals(CalendarUtil.selectedDate)){
+//                holder.parentView.setBackgroundColor(Color.LTGRAY);
+//            }
+//        }
 
         //텍스트 색상 지정
         //토요일 : 파랑
@@ -65,15 +74,15 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                int iYear = day.getYear();
-                int iMonth = day.getMonthValue();
-                int iDay = day.getDayOfMonth();
-                //인터페이스를 통해 날짜 넘겨줌.
-                //onItemListener.onItemClick(day);
-
-                String yearMonDay = iYear + "년 " + iMonth + "월 " + iDay + "일";
-                Toast.makeText(holder.itemView.getContext(), yearMonDay, Toast.LENGTH_SHORT).show();
+//
+//                int iYear = day.getYear();
+//                int iMonth = day.getMonthValue();
+//                int iDay = day.getDayOfMonth();
+//                //인터페이스를 통해 날짜 넘겨줌.
+//                //onItemListener.onItemClick(day);
+//
+//                String yearMonDay = iYear + "년 " + iMonth + "월 " + iDay + "일";
+//                Toast.makeText(holder.itemView.getContext(), yearMonDay, Toast.LENGTH_SHORT).show();
             }
         });
     }
