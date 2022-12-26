@@ -85,7 +85,7 @@ public class Frag3 extends Fragment {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH)+1;
         //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM월");
-        String monthYear = month + "월 " + year;
+        String monthYear = year + "년 " + month + "월" ;
         return monthYear;
     }
 
