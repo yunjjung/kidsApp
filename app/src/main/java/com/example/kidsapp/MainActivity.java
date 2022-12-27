@@ -5,14 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
+
+    private FirebaseAuth mFirebaseAuth;
+
     private BottomNavigationView bottomNavigationView; //하단탭
     private FragmentManager fm;
     private FragmentTransaction ft;
@@ -28,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottomMenu);
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener(){
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem){
-                switch (menuItem.getItemId()){
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
                     case R.id.action_home:
                         setFrag(0);
                         break;
@@ -61,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //프래그먼트 교체가 일어나는 실행문
-    private void setFrag(int n){
+    private void setFrag(int n) {
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
-        switch(n){
+        switch (n) {
             case 0:
                 ft.replace(R.id.main, frag1);
                 ft.commit(); //저장
@@ -83,6 +90,19 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
         }
+        mFirebaseAuth = FirebaseAuth.getInstance(); //빼먹지 말기!
+        Button btnLogout = findViewById(R.id.btn_logout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //로그아웃
+                mFirebaseAuth.signOut();
+
+                Intent LogoutIntent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(LogoutIntent);
+                //finish();
+            }
+        });
 
     }
 }
