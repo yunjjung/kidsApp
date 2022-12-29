@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.kidsapp.MainActivity">
+
+    <item
+        android:title="LOGOUT"
+        android:id="@+id/btn_logout"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        />
+</menu>
