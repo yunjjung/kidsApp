@@ -8,6 +8,7 @@
         android:layout_height="250dp"/>
 
     <TextView
+        android:id="@+id/tv_ment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Welcome XX!"

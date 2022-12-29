@@ -1,10 +1,13 @@
 package com.example.kidsapp;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
     //파이어베이스를 위한 전역변수 선언
     private FirebaseAuth mFirebaseAuth; //파이어베이스 인증
     private DatabaseReference mDatabaseRef; // 실시간 데이터베이스
-    private EditText etEmail, etPwd; // 회원가입 입력 필드
+    private EditText etEmail, etPwd, etNickname; // 회원가입 입력 필드
     private Button btnRegister; //회원가입 버튼
 
 
@@ -37,24 +40,27 @@ public class RegisterActivity extends AppCompatActivity {
 
         etEmail = findViewById(R.id.et_email);
         etPwd = findViewById(R.id.et_pwd);
+        etNickname = findViewById(R.id.et_nickname);
         btnRegister = findViewById(R.id.btn_register);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //회원가입 처리 시작
+                String nickName = etNickname.getText().toString();
                 String strEmail = etEmail.getText().toString(); //회원가입 버튼 눌렸을 때 etEmail에 있는 필드를 가져옴
                 String strPwd = etPwd.getText().toString();
 
                 //FirebaseAuth 진행
-                mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         if(task.isSuccessful()){
-                            FirebaseUser firebaseUser =  mFirebaseAuth.getCurrentUser();
+                            FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
                             UserAccount account = new UserAccount();
-                            account.setIdToken(firebaseUser.getUid());
+                            account.setIdToken(firebaseUser.getUid());//한번 확인해보기
+                            account.setNickname(nickName);
                             account.setEmailId(firebaseUser.getEmail());
                             account.setPassword(strPwd);
 
