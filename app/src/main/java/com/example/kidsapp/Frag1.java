@@ -15,9 +15,23 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Frag1 extends Fragment {
     //메인화면
     private View view;
+    long mNow;
+    Date mDate;
+    SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    TextView mTextView;
+
+    private String getTime(){
+        mNow = System.currentTimeMillis();
+        mDate = new Date(mNow);
+        return mFormat.format(mDate);
+    }
     TextView nickName;
     String nick;
     FirebaseUser user;
@@ -31,11 +45,17 @@ public class Frag1 extends Fragment {
         return view;
     }
 
+//    public void onViewCreated(View view, Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+////
+////        nickName = (TextView) getActivity().findViewById(R.id.tv_ment);
+////        String ment =  user.getDisplayName() + "님 안녕하세요~!";
+////        nickName.setText(ment);
+//    }
+
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//
-//        nickName = (TextView) getActivity().findViewById(R.id.tv_ment);
-//        String ment =  user.getDisplayName() + "님 안녕하세요~!";
-//        nickName.setText(ment);
+        mTextView = (TextView)getActivity().findViewById(R.id.main_date);
+        mTextView.setText(getTime());
     }
 }

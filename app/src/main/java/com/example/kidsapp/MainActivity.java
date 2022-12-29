@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -90,19 +92,40 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
         }
-        mFirebaseAuth = FirebaseAuth.getInstance(); //빼먹지 말기!
-        Button btnLogout = findViewById(R.id.btn_logout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //로그아웃
+
+//        mFirebaseAuth = FirebaseAuth.getInstance(); //빼먹지 말기!
+//        Button btnLogout = findViewById(R.id.btn_logout);
+//        btnLogout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //로그아웃
+//                mFirebaseAuth.signOut();
+//
+//                Intent LogoutIntent = new Intent(MainActivity.this, LoginActivity.class);
+//                startActivity(LogoutIntent);
+//                //finish();
+//            }
+//        });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.top_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        switch (item.getItemId()) {
+            case R.id.btn_logout:
                 mFirebaseAuth.signOut();
 
                 Intent LogoutIntent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(LogoutIntent);
-                //finish();
-            }
-        });
-
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
