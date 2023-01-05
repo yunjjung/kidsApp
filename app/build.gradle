@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.kidsapp"
-        minSdk 21
+        minSdk 28
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -37,6 +37,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.1.0'
     implementation'androidx.fragment:fragment:1.5.4'
     implementation 'com.google.android.material:material:1.0.0'
+
+    implementation 'androidx.wear:wear:1.1.0' //진행중인 활동이 운동, 통화, 미디어와 같이 시계의 백그라운드에서 실행가능하게 함.'
+    implementation 'com.google.android.gms:play-services-wearable:17.1.0'// ?
+
+
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
