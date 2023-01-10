@@ -27,10 +27,15 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 ////차트 그래프 만들기
-//    repository
+    applprojects {
+        repositories {
+            maven { url 'https://jitpack.io' }
+        }
+    }
 }
 
 dependencies {
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'com.google.android.material:material:1.6.1'
@@ -42,8 +47,6 @@ dependencies {
 
     implementation 'androidx.wear:wear:1.1.0' //진행중인 활동이 운동, 통화, 미디어와 같이 시계의 백그라운드에서 실행가능하게 함.'
     implementation 'com.google.android.gms:play-services-wearable:17.1.0'// ?
-
-
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
