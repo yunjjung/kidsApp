@@ -26,13 +26,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-////차트 그래프 만들기
-    applprojects {
-        repositories {
-            maven { url 'https://jitpack.io' }
-        }
-    }
+
 }
+//repositories {
+//    maven { url'https://jitpack.io' }
+//}
 
 dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
