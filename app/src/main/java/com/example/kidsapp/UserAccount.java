@@ -6,12 +6,9 @@ package com.example.kidsapp;
 public class UserAccount
 {
     private String idToken; //Firebase Uid(고유 토큰 정보)
+    private String nickname; //사용자 이름
     private String emailId;
     private String password;
-
-    public String getEmailId() {
-        return emailId;
-    }
 
     public String getIdToken() {
         return idToken;
@@ -19,6 +16,18 @@ public class UserAccount
 
     public void setIdToken(String idToken) {
         this.idToken = idToken;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getEmailId() {
+        return emailId;
     }
 
     public void setEmailId(String emailId) {
@@ -33,7 +42,7 @@ public class UserAccount
         this.password = password;
     }
 
-    public UserAccount() {}
+    public UserAccount() {} //빈 생성자 없으면 안됨.
 
 
 }
