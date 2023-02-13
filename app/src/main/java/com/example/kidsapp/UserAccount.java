@@ -44,5 +44,11 @@ public class UserAccount
 
     public UserAccount() {} //빈 생성자 없으면 안됨.
 
+    public UserAccount(String nickname, String emailId,String password){
+        this.nickname = nickname;
+        this.emailId = emailId;
+        this.password = password;
+    }
+
 
 }

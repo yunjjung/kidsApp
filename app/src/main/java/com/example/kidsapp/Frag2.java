@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,14 +17,21 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 public class Frag2 extends Fragment {
-
+    TextView read;
     private View view;
     private LineChart lineChart;
+    private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("kidsApp");
 
     @Nullable
     @Override
@@ -37,6 +45,20 @@ public class Frag2 extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        read = (TextView) getActivity().findViewById(R.id.read);
+        //데이터 읽기
+        mDatabaseRef.child("SensorDatas").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                SensorData str = snapshot.getValue(SensorData.class);
+                read.setText(str.getTest());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         lineChart = (LineChart)getActivity().findViewById(R.id.linechart);
 
         ArrayList<Entry> values = new ArrayList<>();//데이터를 담을 리스트
@@ -63,6 +85,8 @@ public class Frag2 extends Fragment {
 
         set1.setColor(Color.BLACK);
         set1.setCircleColor(Color.BLACK);
+
+
     }
 //        ArrayList<Entry> entry_chart1 = new ArrayList<>(); // 데이터를 담을 Arraylist
 //        ArrayList<Entry> entry_chart2 = new ArrayList<>();
