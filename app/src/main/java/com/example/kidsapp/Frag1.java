@@ -56,7 +56,7 @@ public class Frag1 extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         userName = (TextView) getActivity().findViewById(R.id.main_user);
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-        mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+        mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserAccount user = snapshot.getValue(UserAccount.class);
