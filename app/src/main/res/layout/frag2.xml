@@ -1,21 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/read"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="분석화면 입니다"
-        />
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/linechart"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/read"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="분석화면 입니다" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/linechart"
+            android:layout_width="match_parent"
+            android:layout_height="250dp" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/linechart2"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/linechart3"
+            android:layout_width="match_parent"
+            android:layout_height="250dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="평균 심박수 : " />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="활동 LEVEL : " />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="걸음수 : " />
+
+    </LinearLayout>
+</ScrollView>
