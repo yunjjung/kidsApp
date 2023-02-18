@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef; // 실시간 데이터베이스
     private EditText etEmail, etPwd, etNickname; // 회원가입 입력 필드
     private Button btnRegister; //회원가입 버튼
+    int flag = 0; //닉네임 중복 확인
 
 
     @Override
@@ -46,19 +48,6 @@ public class RegisterActivity extends AppCompatActivity {
         etNickname = findViewById(R.id.et_nickname);
         btnRegister = findViewById(R.id.btn_register);
 
-        mDatabaseRef.child("UserAccount").child("NickName").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(){
-//
-//                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,12 +57,35 @@ public class RegisterActivity extends AppCompatActivity {
                 String strEmail = etEmail.getText().toString(); //회원가입 버튼 눌렸을 때 etEmail에 있는 필드를 가져옴
                 String strPwd = etPwd.getText().toString();
 
+                //닉네임 중복 검사
+                mDatabaseRef.child("UserAccount").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Log.w("tag", "닉네임 중복 드루와 " + flag);
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            UserAccount person = data.getValue(UserAccount.class);
+                            if (etNickname.getText().toString().equals(person.getNickname())) {
+                                flag = 1;
+                                Log.w("tag", "닉네임 중복 찾았다" + flag);
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
                 //FirebaseAuth 진행
-                mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
-                        if(task.isSuccessful()){
+                        Log.w("회원가입 전 플래그", "ㅁㅁ" + flag);
+                        if(flag==0){
+                        if (task.isSuccessful()) {
+                            Log.w("tag", "ㅁㅁ" + flag);
                             FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
                             UserAccount account = new UserAccount();
                             account.setIdToken(firebaseUser.getUid());
@@ -84,20 +96,27 @@ public class RegisterActivity extends AppCompatActivity {
                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
 
                             Toast.makeText(RegisterActivity.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            Toast.makeText(RegisterActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                            flag = 0;
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
                         }
 
-                        }
+                         else {
+                            Log.e("태그", task.getException().getMessage());
+
+                            Toast.makeText(RegisterActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                        }}
+                            if (flag == 1) {
+                                Toast.makeText(RegisterActivity.this, "닉네임 중복입니다.", Toast.LENGTH_SHORT).show();
+                                flag = 0;
+                            }
+
+                    }
                 });
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+
             }
         });
-
 
 
     }
