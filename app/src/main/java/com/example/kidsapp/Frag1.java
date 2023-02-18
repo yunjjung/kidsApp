@@ -42,6 +42,7 @@ public class Frag1 extends Fragment {
     }
     TextView userName;
     String nick;
+    //realtime Database init
     private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("kidsApp");
 
     @Nullable
@@ -56,6 +57,7 @@ public class Frag1 extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         userName = (TextView) getActivity().findViewById(R.id.main_user);
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+        //realtimeDatabase에서 유저 정보 가져오기
         mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

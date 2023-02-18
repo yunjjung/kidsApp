@@ -18,8 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class RegisterActivity extends AppCompatActivity {
     //파이어베이스를 위한 전역변수 선언
@@ -43,6 +46,20 @@ public class RegisterActivity extends AppCompatActivity {
         etNickname = findViewById(R.id.et_nickname);
         btnRegister = findViewById(R.id.btn_register);
 
+        mDatabaseRef.child("UserAccount").child("NickName").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if(){
+//
+//                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
                             UserAccount account = new UserAccount();
-                            account.setIdToken(firebaseUser.getUid());//한번 확인해보기
+                            account.setIdToken(firebaseUser.getUid());
                             account.setNickname(nickName);
                             account.setEmailId(firebaseUser.getEmail());
                             account.setPassword(strPwd);
