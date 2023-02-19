@@ -48,12 +48,13 @@ public class RegisterActivity extends AppCompatActivity {
         etPwd = findViewById(R.id.et_pwd);
         etNickname = findViewById(R.id.et_nickname);
         btnRegister = findViewById(R.id.btn_register);
-//        btnNickName = findViewById(R.id.btn_nickName);
+        btnNickName = findViewById(R.id.btn_nickName);
 
-//        btnNickName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-                //닉네임 중복 검사
+        btnNickName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flag = 0;
+//                닉네임 중복 검사
                 mDatabaseRef.child("UserAccount").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -63,12 +64,14 @@ public class RegisterActivity extends AppCompatActivity {
                             if (etNickname.getText().toString().equals(person.getNickname())) {
                                 flag = 1;
                                 Toast.makeText(RegisterActivity.this, "닉네임 중복입니다.", Toast.LENGTH_SHORT).show();
-                                flag = 0;
                                 Log.w("tag", "닉네임 중복 찾았다" + flag);
                                 break;
                             }
                         }
-                        if(flag != 1 && flag !=0 ) flag = 2;
+                        if(flag != 1) {
+                            flag = 2;
+                            Toast.makeText(RegisterActivity.this, "사용가능한 닉네임 입니다.", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -77,8 +80,8 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
 
-//            }
-//        });
+            }
+        });
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +110,6 @@ public class RegisterActivity extends AppCompatActivity {
                                     mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
 
                                     Toast.makeText(RegisterActivity.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
-                                    flag = 0;
                                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -128,7 +130,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     });
                 }
-                if (flag == 0) {
+                if (flag == 0 || flag == 1) {
                     Toast.makeText(RegisterActivity.this, "중복을 확인해주세요.", Toast.LENGTH_SHORT).show();
                 }
 
