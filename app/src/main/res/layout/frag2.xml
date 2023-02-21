@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,40 +13,89 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/read"
+            android:id="@+id/read_heart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="분석화면 입니다" />
+            android:text="심박수 센서" />
+
+        <TextView
+            android:id="@+id/read_gyro"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="자이로 센서" />
+
+        <TextView
+            android:id="@+id/read_stepCount"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="걸음수 센서" />
+
 
         <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/linechart"
+            android:id="@+id/chart_heart"
             android:layout_width="match_parent"
             android:layout_height="250dp" />
 
         <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/linechart2"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            />
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/linechart3"
+            android:id="@+id/chart_gyro"
             android:layout_width="match_parent"
             android:layout_height="250dp" />
 
-        <TextView
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart_stepCount"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="평균 심박수 : " />
-        <TextView
+            android:layout_height="250dp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="활동 LEVEL : " />
-        <TextView
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="평균 심박수 : " />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="0" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="걸음수 : " />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="활동 LEVEL : " />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="0" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="걸음 수 : " />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="0" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>
