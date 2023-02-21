@@ -10,6 +10,16 @@ public class UserAccount
     private String emailId;
     private String password;
 
+    public SensorData getSensorData() {
+        return sensorData;
+    }
+
+    public void setSensorData(SensorData sensorData) {
+        this.sensorData = sensorData;
+    }
+
+    private SensorData sensorData;
+
     public String getIdToken() {
         return idToken;
     }
