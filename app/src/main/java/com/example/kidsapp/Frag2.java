@@ -3,6 +3,7 @@ package com.example.kidsapp;
 //import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,19 +27,29 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class Frag2 extends Fragment {
-    TextView read;
+    private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseUser user = mFirebaseAuth.getCurrentUser();
+    private TextView gyro;
+    private TextView heart;
+    private TextView stepCount;
     private View view;
     private LineChart lineChart;
+    private LineChart chart_heart;
+    private LineChart chart_stepCount;
     private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("kidsApp");
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.frag2, container,false);
+        view = inflater.inflate(R.layout.frag2, container, false);
 
         return view;
     }
@@ -45,13 +58,32 @@ public class Frag2 extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        read = (TextView) getActivity().findViewById(R.id.read);
+        heart = (TextView)getActivity().findViewById(R.id.read_heart);
+        gyro = (TextView) getActivity().findViewById(R.id.read_gyro);
+
+        SensorData sensor = new SensorData();
+        sensor.setGyro("x: -0.01, y: -0.01, z: 0.05");
+        sensor.setHeart(128);
+        sensor.setStepCount(73);
+
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String time = LocalDateTime.now().format(formatter);
+        Log.w("시간", LocalDateTime.now() + "시");
+
+
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue("x: -0.01, y: -0.01, z: 0.05");
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue("x: -0.05, y: -0.04, z: 0.03");
+
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).setValue("120");
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).setValue("123");
+        // mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue(sensor);
         //데이터 읽기
-        mDatabaseRef.child("SensorDatas").addValueEventListener(new ValueEventListener() {
+        mDatabaseRef.child("SensorDatas").child("test22").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 SensorData str = snapshot.getValue(SensorData.class);
-                read.setText(str.getTest());
+                gyro.setText(str.getGyro());
             }
 
             @Override
@@ -59,16 +91,29 @@ public class Frag2 extends Fragment {
 
             }
         });
-        lineChart = (LineChart)getActivity().findViewById(R.id.linechart);
 
-        ArrayList<Entry> values = new ArrayList<>();//데이터를 담을 리스트
+        //심박수 센서
+        chart_heart = (LineChart) getActivity().findViewById(R.id.chart_heart);
 
-        for(int i = 0; i < 10; i++){
-            float val = (float)(Math.random() * 10);
-            values.add(new Entry(i, val));//values에 데이터를 담는다.
+        ArrayList<Entry> heart = new ArrayList<>();//데이터를 담을 리스트
+
+        for (int i = 0; i < 10; i++) {
+//            mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    float data = snapshot.getValue(float.class);
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                }
+//            });
+            float val = (float) (Math.random() * 100);
+            heart.add(new Entry(i, val));//values에 데이터를 담는다.
         }
         LineDataSet set1;
-        set1 = new LineDataSet(values, "DataSet 1");//데이터가 담긴 리스트를 LineDataSet으로 변환.
+        set1 = new LineDataSet(heart, "DataSet 1");//데이터가 담긴 리스트를 LineDataSet으로 변환.
 
         ArrayList<LineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1);
@@ -77,7 +122,36 @@ public class Frag2 extends Fragment {
 
         data.addDataSet(set1);
 
-        lineChart.setData(data);
+        chart_heart.setData(data);
+
+        chart_heart.invalidate();//차트 업데이트
+        chart_heart.setTouchEnabled(false); //차트 터치 disable
+
+
+        set1.setColor(Color.BLACK);
+        set1.setCircleColor(Color.BLACK);
+
+
+        //자이로 센서
+        lineChart = (LineChart) getActivity().findViewById(R.id.chart_gyro);
+
+        ArrayList<Entry> value = new ArrayList<>();//데이터를 담을 리스트
+
+        for (int i = 0; i < 10; i++) {
+            float val = (float) (Math.random() * 10);
+            value.add(new Entry(i, val));//values에 데이터를 담는다.
+        }
+        LineDataSet set2;
+        set2 = new LineDataSet(value, "DataSet 2");//데이터가 담긴 리스트를 LineDataSet으로 변환.
+
+        ArrayList<LineDataSet> dataSet = new ArrayList<>();
+        dataSet.add(set2);
+
+        LineData data2 = new LineData(); //차트에 담길 데이터
+
+        data2.addDataSet(set2);
+
+        lineChart.setData(data2);
 
         lineChart.invalidate();//차트 업데이트
         lineChart.setTouchEnabled(false); //차트 터치 disable
@@ -86,9 +160,44 @@ public class Frag2 extends Fragment {
         set1.setColor(Color.BLACK);
         set1.setCircleColor(Color.BLACK);
 
+        //걸음수 센서
+        chart_stepCount = (LineChart) getActivity().findViewById(R.id.chart_stepCount);
+
+        ArrayList<Entry> value3 = new ArrayList<>();//데이터를 담을 리스트
+
+        //추후에 int로
+        float s = 0;
+        for (int i = 0; i < 10; i++) {
+            s = s + (float) (Math.random());
+            value3.add(new Entry(i, s));//values에 데이터를 담는다.
+        }
+        LineDataSet set3;
+        set3 = new LineDataSet(value3, "DataSet 3");//데이터가 담긴 리스트를 LineDataSet으로 변환.
+
+        ArrayList<LineDataSet> dataSet3 = new ArrayList<>();
+        dataSet3.add(set3);
+
+        LineData data3 = new LineData(); //차트에 담길 데이터
+
+        data3.addDataSet(set3);
+
+        chart_stepCount.setData(data3);
+
+        chart_stepCount.invalidate();//차트 업데이트
+        chart_stepCount.setTouchEnabled(false); //차트 터치 disable
+
+
+        set1.setColor(Color.BLACK);
+        set1.setCircleColor(Color.BLACK);
+
+
+
+
+
 
     }
-//        ArrayList<Entry> entry_chart1 = new ArrayList<>(); // 데이터를 담을 Arraylist
+
+    //        ArrayList<Entry> entry_chart1 = new ArrayList<>(); // 데이터를 담을 Arraylist
 //        ArrayList<Entry> entry_chart2 = new ArrayList<>();
 //
 //
@@ -122,6 +231,20 @@ public class Frag2 extends Fragment {
 //
 //        lineChart.invalidate(); // 차트 업데이트
 //        lineChart.setTouchEnabled(false); // 차트 터치 disable
+    public float readHeart() {
+        final float[] data = {-1};
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("heart").addValueEventListener(new ValueEventListener() {
+            @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        data[0] = snapshot.getValue(float.class);
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+        return data[0];
+    }
 
 }
