@@ -8,6 +8,10 @@ public class SensorData {
     private float sensor;
     private LocalDateTime time;
 
+    public SensorData(float sensor, LocalDateTime time){
+        this.sensor = sensor;
+        this.time = time;
+    }
     public float getSensor() {
         return sensor;
     }
