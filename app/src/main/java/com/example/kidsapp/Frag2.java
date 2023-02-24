@@ -27,12 +27,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 public class Frag2 extends Fragment {
     private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
@@ -45,6 +54,16 @@ public class Frag2 extends Fragment {
     private LineChart chart_heart;
     private LineChart chart_stepCount;
     private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("kidsApp");
+    int i = 0;
+    Collection<Float> h; //해쉬에 있는 센서값 받기 위해 필요한 변수
+    //Locale은 지역대 설정. 두번째 인자로는 Locale이 올 수 있다.
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+    DateTimeFormatter form = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.KOREA);
+    LocalDate today = LocalDate.now(); //오늘의 날짜 저장
+    LocalDateTime t = LocalDateTime.now();
+    String time = LocalDateTime.now().format(formatter);
+    ZonedDateTime Ktime = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul"));
+    String s = Ktime.format(formatter);
 
     @Nullable
     @Override
@@ -61,47 +80,68 @@ public class Frag2 extends Fragment {
         heart = (TextView)getActivity().findViewById(R.id.read_heart);
         gyro = (TextView) getActivity().findViewById(R.id.read_gyro);
 
-        SensorData sensor = new SensorData();
-        sensor.setGyro("x: -0.01, y: -0.01, z: 0.05");
-        sensor.setHeart(128);
-        sensor.setStepCount(73);
+//        SensorData sensor = new SensorData();
+//        sensor.setGyro("x: -0.01, y: -0.01, z: 0.05");
+//        sensor.setHeart(128);
+//        sensor.setStepCount(73);
 
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String time = LocalDateTime.now().format(formatter);
-        Log.w("시간", LocalDateTime.now() + "시");
+
+        Log.w("시간", Ktime + "시");
+        Log.w("s시간", s + "시");
+        Log.w("넣는 시간", today.format(form) + "시");
+
+        SensorData s1 = new SensorData(120,LocalDateTime.now());
+        SensorData s2 = new SensorData(140,LocalDateTime.now());
 
 
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue("x: -0.01, y: -0.01, z: 0.05");
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue("x: -0.05, y: -0.04, z: 0.03");
+        //전에 기록되어있던 날짜 읽어오기
 
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).setValue("120");
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).setValue("123");
-        // mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue(sensor);
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s1);//setValue("x: -0.01, y: -0.01, z: 0.05");
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s2);//setValue("x: -0.01, y: -0.01, z: 0.05");
+//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue("x: -0.05, y: -0.04, z: 0.03");
+
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).push().setValue(new SensorData(120, t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).push().setValue(new SensorData(123,t));
+        //mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue(sensor);
         //데이터 읽기
-        mDatabaseRef.child("SensorDatas").child("test22").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                SensorData str = snapshot.getValue(SensorData.class);
-                gyro.setText(str.getGyro());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+//        mDatabaseRef.child("SensorDatas").child("test22").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                SensorData str = snapshot.getValue(SensorData.class);
+////                gyro.setText(str.getGyro());
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
 
         //심박수 센서
-        chart_heart = (LineChart) getActivity().findViewById(R.id.chart_heart);
+
+        //초기화화
+       chart_heart = (LineChart) getActivity().findViewById(R.id.chart_heart);
 
         ArrayList<Entry> heart = new ArrayList<>();//데이터를 담을 리스트
 
-        for (int i = 0; i < 10; i++) {
+
+        Log.w("tag", "통과");
+
+
+//            float val = (float) (Math.random() * 100);
+//            heart.add(new Entry(i, val));//values에 데이터를 담는다.
+
+        //데이터 생성
+//        for (i = 0; i < 10; i++) {
 //            mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").addValueEventListener(new ValueEventListener() {
 //                @Override
 //                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    float data = snapshot.getValue(float.class);
+//
+//                     HashMap data = snapshot.getValue(HashMap.class);
+//                    //float val = (float) (Math.random() * 100);
+////                    h = data.values();//heart에 데이터를 담는다.
+////                    heart.add(new Entry(i, h));
 //                }
 //
 //                @Override
@@ -109,27 +149,45 @@ public class Frag2 extends Fragment {
 //
 //                }
 //            });
-            float val = (float) (Math.random() * 100);
-            heart.add(new Entry(i, val));//values에 데이터를 담는다.
-        }
-        LineDataSet set1;
-        set1 = new LineDataSet(heart, "DataSet 1");//데이터가 담긴 리스트를 LineDataSet으로 변환.
+//
+////            float val = (float) (Math.random() * 100);
+////            heart.add(new Entry(i, val));//values에 데이터를 담는다.
+//        }
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot sensorData : snapshot.getChildren()){
+                    i++;
+                    SensorData data = sensorData.getValue(SensorData.class);
+                    heart.add(new Entry(i, data.getSensor()));
+                }
+            }
 
-        ArrayList<LineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set1);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+        LineDataSet heartSet; //데이터셋에 데이터 넣기
+        heartSet = new LineDataSet(heart, "Heart");//데이터가 담긴 리스트를 LineDataSet으로 변환.
+
+        //리스트에 데이터셋 추가
+        ArrayList<LineDataSet> heartdataSets = new ArrayList<>();
+        heartdataSets.add(heartSet);
+
+        //LineData에 list추가
         LineData data = new LineData(); //차트에 담길 데이터
+        data.addDataSet(heartSet);
 
-        data.addDataSet(set1);
-
+        //차트에 데이터 추가
         chart_heart.setData(data);
 
         chart_heart.invalidate();//차트 업데이트
         chart_heart.setTouchEnabled(false); //차트 터치 disable
 
 
-        set1.setColor(Color.BLACK);
-        set1.setCircleColor(Color.BLACK);
+        heartSet.setColor(Color.BLACK);
+        heartSet.setCircleColor(Color.BLACK);
 
 
         //자이로 센서
@@ -157,8 +215,8 @@ public class Frag2 extends Fragment {
         lineChart.setTouchEnabled(false); //차트 터치 disable
 
 
-        set1.setColor(Color.BLACK);
-        set1.setCircleColor(Color.BLACK);
+//        set1.setColor(Color.BLACK);
+//        set1.setCircleColor(Color.BLACK);
 
         //걸음수 센서
         chart_stepCount = (LineChart) getActivity().findViewById(R.id.chart_stepCount);
@@ -187,8 +245,8 @@ public class Frag2 extends Fragment {
         chart_stepCount.setTouchEnabled(false); //차트 터치 disable
 
 
-        set1.setColor(Color.BLACK);
-        set1.setCircleColor(Color.BLACK);
+//        set1.setColor(Color.BLACK);
+//        set1.setCircleColor(Color.BLACK);
 
 
 
