@@ -8,6 +8,8 @@ public class SensorData {
     private float sensor;
     private LocalDateTime time;
 
+    public SensorData() {} //빈 생성자 없으면 안되는 듯
+
     public SensorData(float sensor, LocalDateTime time){
         this.sensor = sensor;
         this.time = time;

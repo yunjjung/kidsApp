@@ -153,21 +153,33 @@ public class Frag2 extends Fragment {
 ////            float val = (float) (Math.random() * 100);
 ////            heart.add(new Entry(i, val));//values에 데이터를 담는다.
 //        }
+        Log.w("data create before", "생성");
         mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.w("data create", "들어는 왔다 for문 문제임");
+                //DataSnapshot ds = snapshot.getChildren();
+
+                Log.w("child 값", snapshot.getChildren()+"이거 맞아?");
                 for(DataSnapshot sensorData : snapshot.getChildren()){
+                    Log.w("data create", "생성");
                     i++;
-                    SensorData data = sensorData.getValue(SensorData.class);
-                    heart.add(new Entry(i, data.getSensor()));
+                    float data = (float)sensorData.child("sensor").getValue(Integer.class);
+                    heart.add(new Entry(i, data));
                 }
             }
 
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("heart data read fail",error.toException()+" 힝");
 
             }
         });
+        for(int j = 0; j < heart.size() ; j++ ){
+            Log.w("heart arr", heart.get(j)+"?");
+        }
+        Log.w("heart data read after"," 힝");
         LineDataSet heartSet; //데이터셋에 데이터 넣기
         heartSet = new LineDataSet(heart, "Heart");//데이터가 담긴 리스트를 LineDataSet으로 변환.
 
@@ -196,6 +208,7 @@ public class Frag2 extends Fragment {
         ArrayList<Entry> value = new ArrayList<>();//데이터를 담을 리스트
 
         for (int i = 0; i < 10; i++) {
+            Log.w("자이로 센서 ", "뿅");
             float val = (float) (Math.random() * 10);
             value.add(new Entry(i, val));//values에 데이터를 담는다.
         }
