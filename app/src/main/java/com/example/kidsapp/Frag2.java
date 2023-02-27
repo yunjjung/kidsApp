@@ -161,7 +161,7 @@ public class Frag2 extends Fragment {
                 for(DataSnapshot sensorData : snapshot.getChildren()){
                     Log.w("data create", "생성");
                     float data = (float)sensorData.child("sensor").getValue(Integer.class);
-
+                    i++;
                     heartArr.add(new Entry(i, data));
                     Log.w("data create 얌", heartArr + "생성");
                 }
