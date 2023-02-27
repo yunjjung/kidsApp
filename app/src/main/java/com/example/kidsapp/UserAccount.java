@@ -9,6 +9,7 @@ public class UserAccount
     private String nickname; //사용자 이름
     private String emailId;
     private String password;
+    private SensorData sensorData;
 
     public SensorData getSensorData() {
         return sensorData;
@@ -18,7 +19,7 @@ public class UserAccount
         this.sensorData = sensorData;
     }
 
-    private SensorData sensorData;
+
 
     public String getIdToken() {
         return idToken;
