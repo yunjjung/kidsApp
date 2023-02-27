@@ -52,6 +52,7 @@ public class Frag2 extends Fragment {
     private View view;
     private LineChart lineChart;
     private LineChart chart_heart;
+    ArrayList<Entry> heartArr = new ArrayList<>();//데이터를 담을 리스트
     private LineChart chart_stepCount;
     private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("kidsApp");
     int i = 0;
@@ -121,13 +122,9 @@ public class Frag2 extends Fragment {
         //심박수 센서
 
         //초기화화
-       chart_heart = (LineChart) getActivity().findViewById(R.id.chart_heart);
-
-        ArrayList<Entry> heart = new ArrayList<>();//데이터를 담을 리스트
-
+        chart_heart = (LineChart) getActivity().findViewById(R.id.chart_heart);
 
         Log.w("tag", "통과");
-
 
 //            float val = (float) (Math.random() * 100);
 //            heart.add(new Entry(i, val));//values에 데이터를 담는다.
@@ -138,7 +135,8 @@ public class Frag2 extends Fragment {
 //                @Override
 //                public void onDataChange(@NonNull DataSnapshot snapshot) {
 //
-//                     HashMap data = snapshot.getValue(HashMap.class);
+//                     //HashMap data = snapshot.getValue(HashMap.class);
+//                     Log.w("key",snapshot.getKey()+"key");
 //                    //float val = (float) (Math.random() * 100);
 ////                    h = data.values();//heart에 데이터를 담는다.
 ////                    heart.add(new Entry(i, h));
@@ -149,24 +147,45 @@ public class Frag2 extends Fragment {
 //
 //                }
 //            });
-//
-////            float val = (float) (Math.random() * 100);
-////            heart.add(new Entry(i, val));//values에 데이터를 담는다.
-//        }
+
+//            float val = (float) (Math.random() * 100);
+//            heart.add(new Entry(i, val));//values에 데이터를 담는다.
+       // }
         Log.w("data create before", "생성");
         mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.w("data create", "들어는 왔다 for문 문제임");
-                //DataSnapshot ds = snapshot.getChildren();
 
                 Log.w("child 값", snapshot.getChildren()+"이거 맞아?");
                 for(DataSnapshot sensorData : snapshot.getChildren()){
                     Log.w("data create", "생성");
-                    i++;
                     float data = (float)sensorData.child("sensor").getValue(Integer.class);
-                    heart.add(new Entry(i, data));
+
+                    heartArr.add(new Entry(i, data));
+                    Log.w("data create 얌", heartArr + "생성");
                 }
+                LineDataSet heartSet; //데이터셋에 데이터 넣기
+                heartSet = new LineDataSet(heartArr, "Heart");//데이터가 담긴 리스트를 LineDataSet으로 변환.
+
+                //리스트에 데이터셋 추가
+                ArrayList<LineDataSet> heartdataSets = new ArrayList<>();
+                heartdataSets.add(heartSet);
+
+                //LineData에 list추가
+                LineData data = new LineData(); //차트에 담길 데이터
+                data.addDataSet(heartSet);
+
+                //차트에 데이터 추가
+                chart_heart.setData(data);
+
+                chart_heart.invalidate();//차트 업데이트
+                chart_heart.setTouchEnabled(false); //차트 터치 disable
+
+
+                heartSet.setColor(Color.BLACK);
+                heartSet.setCircleColor(Color.BLACK);
+
             }
 
 
@@ -176,30 +195,28 @@ public class Frag2 extends Fragment {
 
             }
         });
-        for(int j = 0; j < heart.size() ; j++ ){
-            Log.w("heart arr", heart.get(j)+"?");
-        }
+        Log.w("heart arr후", heartArr+"?");
         Log.w("heart data read after"," 힝");
-        LineDataSet heartSet; //데이터셋에 데이터 넣기
-        heartSet = new LineDataSet(heart, "Heart");//데이터가 담긴 리스트를 LineDataSet으로 변환.
+//        LineDataSet heartSet; //데이터셋에 데이터 넣기
+//        heartSet = new LineDataSet(heartArr, "Heart");//데이터가 담긴 리스트를 LineDataSet으로 변환.
+//
+//        //리스트에 데이터셋 추가
+//        ArrayList<LineDataSet> heartdataSets = new ArrayList<>();
+//        heartdataSets.add(heartSet);
+//
+//        //LineData에 list추가
+//        LineData data = new LineData(); //차트에 담길 데이터
+//        data.addDataSet(heartSet);
+//
+//        //차트에 데이터 추가
+//        chart_heart.setData(data);
 
-        //리스트에 데이터셋 추가
-        ArrayList<LineDataSet> heartdataSets = new ArrayList<>();
-        heartdataSets.add(heartSet);
-
-        //LineData에 list추가
-        LineData data = new LineData(); //차트에 담길 데이터
-        data.addDataSet(heartSet);
-
-        //차트에 데이터 추가
-        chart_heart.setData(data);
-
-        chart_heart.invalidate();//차트 업데이트
-        chart_heart.setTouchEnabled(false); //차트 터치 disable
-
-
-        heartSet.setColor(Color.BLACK);
-        heartSet.setCircleColor(Color.BLACK);
+//        chart_heart.invalidate();//차트 업데이트
+//        chart_heart.setTouchEnabled(false); //차트 터치 disable
+//
+//
+//        heartSet.setColor(Color.BLACK);
+//        heartSet.setCircleColor(Color.BLACK);
 
 
         //자이로 센서
