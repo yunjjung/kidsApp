@@ -55,12 +55,15 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="40dp"
                 android:text="평균 심박수 : " />
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/avg_heart"
+                android:layout_width="0dp"
+                android:layout_weight="3"
                 android:layout_height="40dp"
                 android:text="0" />
         </LinearLayout>
@@ -71,12 +74,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="40dp"
                 android:text="활동 LEVEL : " />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
                 android:layout_height="40dp"
                 android:text="0" />
         </LinearLayout>
@@ -87,12 +92,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="40dp"
                 android:text="걸음 수 : " />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
                 android:layout_height="40dp"
                 android:text="0" />
         </LinearLayout>
