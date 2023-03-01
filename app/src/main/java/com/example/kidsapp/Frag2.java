@@ -56,6 +56,8 @@ public class Frag2 extends Fragment {
     float todayHeart=0;
     ArrayList<Entry> heartArr = new ArrayList<>();//데이터를 담을 리스트
     private LineChart chart_stepCount;
+    ArrayList<Entry> stepCountArr = new ArrayList<>();//데이터를 담을 리스트
+    int todayStepCount = 0;
     private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("kidsApp");
     int i = 0;
     Collection<Float> h; //해쉬에 있는 센서값 받기 위해 필요한 변수
@@ -80,8 +82,8 @@ public class Frag2 extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        heart = (TextView)getActivity().findViewById(R.id.read_heart);
-        avg_heart = (TextView)getActivity().findViewById(R.id.avg_heart);
+        heart = (TextView) getActivity().findViewById(R.id.read_heart);
+        avg_heart = (TextView) getActivity().findViewById(R.id.avg_heart);
         gyro = (TextView) getActivity().findViewById(R.id.read_gyro);
 
 //        SensorData sensor = new SensorData();
@@ -90,13 +92,12 @@ public class Frag2 extends Fragment {
 //        sensor.setStepCount(73);
 
 
-
         Log.w("시간", Ktime + "시");
         Log.w("s시간", s + "시");
         Log.w("넣는 시간", today.format(form) + "시");
 
-        SensorData s1 = new SensorData(120,LocalDateTime.now());
-        SensorData s2 = new SensorData(140,LocalDateTime.now());
+        SensorData s1 = new SensorData(120, LocalDateTime.now());
+        SensorData s2 = new SensorData(140, LocalDateTime.now());
 
 
         //전에 기록되어있던 날짜 읽어오기
@@ -159,17 +160,17 @@ public class Frag2 extends Fragment {
 
 //            float val = (float) (Math.random() * 100);
 //            heart.add(new Entry(i, val));//values에 데이터를 담는다.
-       // }
+        // }
         Log.w("data create before", "생성");
         mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.w("data create", "들어는 왔다 for문 문제임");
 
-                Log.w("child 값", snapshot.getChildren()+"이거 맞아?");
-                for(DataSnapshot sensorData : snapshot.getChildren()){
+                Log.w("child 값", snapshot.getChildren() + "이거 맞아?");
+                for (DataSnapshot sensorData : snapshot.getChildren()) {
                     Log.w("data create", "생성");
-                    float data = (float)sensorData.child("sensor").getValue(Integer.class);
+                    float data = (float) sensorData.child("sensor").getValue(Integer.class);
                     i++;
                     heartArr.add(new Entry(i, data));
                     todayHeart = todayHeart + data;
@@ -198,8 +199,8 @@ public class Frag2 extends Fragment {
 
 
                 //심박수 평균 구하기
-                todayHeart = todayHeart/snapshot.getChildrenCount();
-                Log.w("child",snapshot.getChildrenCount()+"di" + todayHeart);
+                todayHeart = todayHeart / snapshot.getChildrenCount();
+                Log.w("child", snapshot.getChildrenCount() + "di" + todayHeart);
                 avg_heart.setText(String.valueOf(todayHeart));
 
 
@@ -208,13 +209,13 @@ public class Frag2 extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("heart data read fail",error.toException()+" 힝");
+                Log.e("heart data read fail", error.toException() + " 힝");
 
             }
         });
 
-        Log.w("heart arr후", heartArr+"?");
-        Log.w("heart data read after"," 힝");
+        Log.w("heart arr후", heartArr + "?");
+        Log.w("heart data read after", " 힝");
 //        LineDataSet heartSet; //데이터셋에 데이터 넣기
 //        heartSet = new LineDataSet(heartArr, "Heart");//데이터가 담긴 리스트를 LineDataSet으로 변환.
 //
@@ -266,44 +267,51 @@ public class Frag2 extends Fragment {
 //        set1.setColor(Color.BLACK);
 //        set1.setCircleColor(Color.BLACK);
 
+
         //걸음수 센서
         chart_stepCount = (LineChart) getActivity().findViewById(R.id.chart_stepCount);
 
-        ArrayList<Entry> value3 = new ArrayList<>();//데이터를 담을 리스트
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot sensorData : snapshot.getChildren()) {
+                    Log.w("data create", "생성");
+                    float data = (float) sensorData.child("sensor").getValue(Integer.class);
+                    i++;
+                    todayStepCount = todayStepCount + (int) data;
+                    stepCountArr.add(new Entry(i, todayStepCount));
+                    Log.w("data create 얌", stepCountArr + "생성");
+                }
+                LineDataSet stepCountSet;
+                stepCountSet = new LineDataSet(stepCountArr, "stepCount");//데이터가 담긴 리스트를 LineDataSet으로 변환.
 
-        //추후에 int로
-        float s = 0;
-        for (int i = 0; i < 10; i++) {
-            s = s + (float) (Math.random());
-            value3.add(new Entry(i, s));//values에 데이터를 담는다.
-        }
-        LineDataSet set3;
-        set3 = new LineDataSet(value3, "DataSet 3");//데이터가 담긴 리스트를 LineDataSet으로 변환.
+                ArrayList<LineDataSet> stepCountDataSets = new ArrayList<>();
+                stepCountDataSets.add(stepCountSet);
 
-        ArrayList<LineDataSet> dataSet3 = new ArrayList<>();
-        dataSet3.add(set3);
+                LineData data3 = new LineData(); //차트에 담길 데이터
 
-        LineData data3 = new LineData(); //차트에 담길 데이터
+                data3.addDataSet(stepCountSet);
 
-        data3.addDataSet(set3);
+                chart_stepCount.setData(data3);
 
-        chart_stepCount.setData(data3);
+                chart_stepCount.invalidate();//차트 업데이트
+                chart_stepCount.setTouchEnabled(false); //차트 터치 disable
 
-        chart_stepCount.invalidate();//차트 업데이트
-        chart_stepCount.setTouchEnabled(false); //차트 터치 disable
-
-
-//        set1.setColor(Color.BLACK);
-//        set1.setCircleColor(Color.BLACK);
-
-
-
-
+                stepCountSet.setColor(Color.BLACK);
+                stepCountSet.setCircleColor(Color.BLACK);
 
 
-    }
 
-    //        ArrayList<Entry> entry_chart1 = new ArrayList<>(); // 데이터를 담을 Arraylist
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("heart data read fail", error.toException() + " 힝");
+
+            }
+        });
+
+        //        ArrayList<Entry> entry_chart1 = new ArrayList<>(); // 데이터를 담을 Arraylist
 //        ArrayList<Entry> entry_chart2 = new ArrayList<>();
 //
 //
@@ -337,20 +345,7 @@ public class Frag2 extends Fragment {
 //
 //        lineChart.invalidate(); // 차트 업데이트
 //        lineChart.setTouchEnabled(false); // 차트 터치 disable
-    public float readHeart() {
-        final float[] data = {-1};
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("heart").addValueEventListener(new ValueEventListener() {
-            @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        data[0] = snapshot.getValue(float.class);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-        return data[0];
+//
     }
 
 }
