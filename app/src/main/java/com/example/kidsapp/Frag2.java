@@ -50,6 +50,7 @@ public class Frag2 extends Fragment {
     private TextView heart;
     private TextView avg_heart;
     private TextView stepCount;
+    private TextView totalStepCount;
     private View view;
     private LineChart lineChart;
     private LineChart chart_heart;
@@ -103,17 +104,17 @@ public class Frag2 extends Fragment {
         //전에 기록되어있던 날짜 읽어오기
         //if()
 
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s1);//setValue("x: -0.01, y: -0.01, z: 0.05");
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s2);//setValue("x: -0.01, y: -0.01, z: 0.05");
-////        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue("x: -0.05, y: -0.04, z: 0.03");
-//
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).push().setValue(new SensorData(120, t));
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).push().setValue(new SensorData(123,t));
-//
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).push().setValue(new SensorData(2, t));
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).push().setValue(new SensorData(1,t));
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).push().setValue(new SensorData(2, t));
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).push().setValue(new SensorData(1,t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s1);//setValue("x: -0.01, y: -0.01, z: 0.05");
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s2);//setValue("x: -0.01, y: -0.01, z: 0.05");
+//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue("x: -0.05, y: -0.04, z: 0.03");
+
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).push().setValue(new SensorData(120, t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).push().setValue(new SensorData(123,t));
+
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).push().setValue(new SensorData(2, t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).push().setValue(new SensorData(1,t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).push().setValue(new SensorData(2, t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).push().setValue(new SensorData(1,t));
         //mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue(sensor);
         //데이터 읽기
 //        mDatabaseRef.child("SensorDatas").child("test22").addValueEventListener(new ValueEventListener() {
@@ -299,6 +300,10 @@ public class Frag2 extends Fragment {
 
                 stepCountSet.setColor(Color.BLACK);
                 stepCountSet.setCircleColor(Color.BLACK);
+
+                //총 걸음 수 표시
+                totalStepCount = (TextView)getActivity().findViewById(R.id.total_stepCount);
+                totalStepCount.setText(String.valueOf(todayStepCount));
 
 
 
