@@ -46,8 +46,8 @@ import java.util.TimeZone;
 public class Frag2 extends Fragment {
     private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     private FirebaseUser user = mFirebaseAuth.getCurrentUser();
-    private TextView gyro;
-    private TextView heart;
+//    private TextView gyro;
+//    private TextView heart;
     private TextView avg_heart;
     private TextView stepCount;
     private TextView totalStepCount;
@@ -83,9 +83,9 @@ public class Frag2 extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        heart = (TextView) getActivity().findViewById(R.id.read_heart);
+       // heart = (TextView) getActivity().findViewById(R.id.read_heart);
         avg_heart = (TextView) getActivity().findViewById(R.id.avg_heart);
-        gyro = (TextView) getActivity().findViewById(R.id.read_gyro);
+        //gyro = (TextView) getActivity().findViewById(R.id.read_gyro);
 
 //        SensorData sensor = new SensorData();
 //        sensor.setGyro("x: -0.01, y: -0.01, z: 0.05");
