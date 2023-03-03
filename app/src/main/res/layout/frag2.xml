@@ -33,21 +33,20 @@
             android:layout_weight="1"
             android:text="걸음수 센서" />
 
-
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart_heart"
             android:layout_width="match_parent"
-            android:layout_height="250dp" />
+            android:layout_height="180dp" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart_gyro"
             android:layout_width="match_parent"
-            android:layout_height="250dp" />
+            android:layout_height="180dp" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart_stepCount"
             android:layout_width="match_parent"
-            android:layout_height="250dp" />
+            android:layout_height="180dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
