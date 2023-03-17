@@ -12,26 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-<!--        <TextView-->
-<!--            android:id="@+id/read_heart"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="심박수 센서" />-->
 
-<!--        <TextView-->
-<!--            android:id="@+id/read_gyro"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="자이로 센서" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/read_stepCount"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="걸음수 센서" />-->
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart_heart"
@@ -107,3 +88,24 @@
 
     </LinearLayout>
 </ScrollView>
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/read_heart"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:text="심박수 센서" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/read_gyro"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:text="자이로 센서" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/read_stepCount"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:text="걸음수 센서" />-->

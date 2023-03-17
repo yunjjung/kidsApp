@@ -108,15 +108,15 @@ public class Frag2 extends Fragment {
 //        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s2);//setValue("x: -0.01, y: -0.01, z: 0.05");
 //        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue("x: -0.05, y: -0.04, z: 0.03");
 
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).push().setValue(120);
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).push().setValue(123);
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).child("data").push().setValue(new SensorData(120,t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).child("data").push().setValue(new SensorData(132,t));
 //        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).push().setValue(new SensorData(120, t));
 //        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).push().setValue(new SensorData(123,t));
 
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).push().setValue(new SensorData(2, t));
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).push().setValue(new SensorData(1,t));
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).push().setValue(new SensorData(2, t));
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).push().setValue(new SensorData(1,t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(2, t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(1,t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(2, t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(1,t));
         //mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue(sensor);
         //데이터 읽기
 //        mDatabaseRef.child("SensorDatas").child("test22").addValueEventListener(new ValueEventListener() {
@@ -221,7 +221,7 @@ public class Frag2 extends Fragment {
 //            heart.add(new Entry(i, val));//values에 데이터를 담는다.
         // }
         Log.w("data create before", "생성");
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).addValueEventListener(new ValueEventListener() {
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).child("data").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.w("data create", "들어는 왔다 for문 문제임");
@@ -261,6 +261,11 @@ public class Frag2 extends Fragment {
                 todayHeart = todayHeart / snapshot.getChildrenCount();
                 Log.w("child", snapshot.getChildrenCount() + "di" + todayHeart);
                 avg_heart.setText(String.valueOf(todayHeart));
+
+                //그날의 심박수 평균 저장 (.push빼서 덮어쓰기 가능하게!)
+               mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).child("averageHeart").setValue(todayHeart);
+//
+
 
 
             }
@@ -330,7 +335,7 @@ public class Frag2 extends Fragment {
         //걸음수 센서
         chart_stepCount = (LineChart) getActivity().findViewById(R.id.chart_stepCount);
 
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).addValueEventListener(new ValueEventListener() {
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot sensorData : snapshot.getChildren()) {
@@ -362,7 +367,7 @@ public class Frag2 extends Fragment {
                 //총 걸음 수 표시
                 totalStepCount = (TextView)getActivity().findViewById(R.id.total_stepCount);
                 totalStepCount.setText(String.valueOf(todayStepCount));
-
+                mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("totalStepCount").setValue(todayStepCount);
 
 
             }
