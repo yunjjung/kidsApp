@@ -50,7 +50,6 @@
             android:src = "@drawable/ic_baseline_arrow_forward_ios_24"/>
     </LinearLayout>
 
-    //요일
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -132,12 +131,50 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="300dp"
         />
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="히스토리 입니다"
-        />
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="평균 심박수: "
+            />
+        <TextView
+            android:id="@+id/day_heart"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="평균 LEVEL: "
+            />
+        <TextView
+            android:id="@+id/day_level"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="총 걸음수: "
+            />
+        <TextView
+            android:id="@+id/day_stepcount"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"/>
+    </LinearLayout>
+
 
 </LinearLayout>

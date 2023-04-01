@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -99,9 +101,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         }
         //날짜 클릭 이벤트
         holder.itemView.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-//
+                String day = holder.dayText.getText().toString();
+                System.out.println(day);
 //                int iYear = day.getYear();
 //                int iMonth = day.getMonthValue();
 //                int iDay = day.getDayOfMonth();
