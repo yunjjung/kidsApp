@@ -1,6 +1,7 @@
 package com.example.kidsapp;
 
 //import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +49,7 @@ public class Frag2 extends Fragment {
     private FirebaseUser user = mFirebaseAuth.getCurrentUser();
 //    private TextView gyro;
 //    private TextView heart;
+    private Intent intent;//intent 선언
     private TextView avg_heart;
     private TextView stepCount;
     private TextView totalStepCount;
@@ -114,9 +116,9 @@ public class Frag2 extends Fragment {
 //        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).push().setValue(new SensorData(123,t));
 
         mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(2, t));
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(1,t));
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(2, t));
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(1,t));
+//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(1,t));
+//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(2, t));
+//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(1,t));
         //mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue(sensor);
         //데이터 읽기
 //        mDatabaseRef.child("SensorDatas").child("test22").addValueEventListener(new ValueEventListener() {

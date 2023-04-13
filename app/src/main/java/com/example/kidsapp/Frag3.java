@@ -103,7 +103,7 @@ public class Frag3 extends Fragment {
         //해당 월 날짜 가져오기
         ArrayList<Date> dayList = daysInMonthArray();
         //어뎁터 데이터 적용
-        CalendarAdapter adapter = new CalendarAdapter(dayList);
+        CalendarAdapter adapter = new CalendarAdapter(dayList, getContext());
         //레이아웃 설정(열 7개)
         RecyclerView.LayoutManager manager = new GridLayoutManager(getActivity().getApplicationContext(), 7);
         recyclerView.setLayoutManager(manager);

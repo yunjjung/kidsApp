@@ -1,5 +1,7 @@
 package com.example.kidsapp;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -22,11 +24,13 @@ import java.util.Date;
 //화면과 데이터를 연결해주는 클래스
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>{
     ArrayList<Date> dayList;
+    private Context context;
 
     //OnItemListener onItemListener;//인터페이스 선언
 
-   public CalendarAdapter(ArrayList<Date> dayList){
+   public CalendarAdapter(ArrayList<Date> dayList, Context context){
         this.dayList = dayList;
+        this.context = context;
         //this.onItemListener = onItemListener;
     }
 
@@ -43,6 +47,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         //날짜 변수에 담기
         Date monthDay = dayList.get(position);
+
 
         //달력 초기화
         Calendar dateCalendar = Calendar.getInstance();
@@ -106,6 +111,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             public void onClick(View v) {
                 String day = holder.dayText.getText().toString();
                 System.out.println(day);
+                Intent intent = new Intent(context, Frag2.class ); //Frag2.class부분에 원하는 화면 연결
+                intent.putExtra("day", day); //변수값 intent로 넘기기
+                context.startActivity(intent);
 //                int iYear = day.getYear();
 //                int iMonth = day.getMonthValue();
 //                int iDay = day.getDayOfMonth();
