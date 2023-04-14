@@ -8,24 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalDate;
-import java.time.Year;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Frag3 extends Fragment {
+public class Frag3 extends Fragment implements OnItemClick{
+    FragmentActivity intent = getActivity();
     //달력 부분
     TextView yearMonthText;
     LocalDate selectedDate; //년월 변수
@@ -58,6 +57,7 @@ public class Frag3 extends Fragment {
         //화면 설정
         setMonthView();
 
+
         //이전달 버튼
         preBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +78,8 @@ public class Frag3 extends Fragment {
             }
         });
     }
+
+
 
     //날짜 타입 설정
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -103,13 +105,19 @@ public class Frag3 extends Fragment {
         //해당 월 날짜 가져오기
         ArrayList<Date> dayList = daysInMonthArray();
         //어뎁터 데이터 적용
-        CalendarAdapter adapter = new CalendarAdapter(dayList, getContext());
+        CalendarAdapter adapter = new CalendarAdapter(dayList, getContext(), this);
         //레이아웃 설정(열 7개)
         RecyclerView.LayoutManager manager = new GridLayoutManager(getActivity().getApplicationContext(), 7);
         recyclerView.setLayoutManager(manager);
 
         //어뎁터 적용.
         recyclerView.setAdapter(adapter);
+        //날짜 클릭 되었을때
+
+    }
+    @Override
+    public void onClick(String value){
+        System.out.println(value);
     }
     //날짜 생성
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -154,7 +162,10 @@ public class Frag3 extends Fragment {
 //        }
         return dayList;
 
+
     }
+
+
 //
 //    //날짜 어뎁터에서 넘긴 데이터를 받는 메서드
 //    @RequiresApi(api = Build.VERSION_CODES.O)

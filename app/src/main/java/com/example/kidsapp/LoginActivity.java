@@ -6,6 +6,7 @@ import androidx.appcompat.widget.VectorEnabledTintResources;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                         else
                         {
                             Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                            Log.w("error",task.getException());
                         }
                     }
                 });

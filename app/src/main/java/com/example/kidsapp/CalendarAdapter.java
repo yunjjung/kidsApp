@@ -25,12 +25,15 @@ import java.util.Date;
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>{
     ArrayList<Date> dayList;
     private Context context;
+    //클릭 이벤트시, 데이터 프레그먼트로 넘겨줌
+    private OnItemClick mCallback;
 
     //OnItemListener onItemListener;//인터페이스 선언
 
-   public CalendarAdapter(ArrayList<Date> dayList, Context context){
+   public CalendarAdapter(ArrayList<Date> dayList, Context context, OnItemClick listener){
         this.dayList = dayList;
         this.context = context;
+        this.mCallback = listener;//프레그먼트 데이터 전달
         //this.onItemListener = onItemListener;
     }
 
@@ -111,9 +114,10 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             public void onClick(View v) {
                 String day = holder.dayText.getText().toString();
                 System.out.println(day);
-                Intent intent = new Intent(context, Frag2.class ); //Frag2.class부분에 원하는 화면 연결
-                intent.putExtra("day", day); //변수값 intent로 넘기기
-                context.startActivity(intent);
+                mCallback.onClick(day);
+//                Intent clickIntent = new Intent(context, Frag3.class ); //Frag3.class부분에 원하는 화면 연결
+//                clickIntent.putExtra("day", day); //변수값 intent로 넘기기
+//                context.startActivity(clickIntent);
 //                int iYear = day.getYear();
 //                int iMonth = day.getMonthValue();
 //                int iDay = day.getDayOfMonth();
