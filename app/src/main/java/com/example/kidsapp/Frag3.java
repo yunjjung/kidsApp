@@ -17,13 +17,29 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Frag3 extends Fragment implements OnItemClick{
+public class Frag3 extends Fragment implements OnItemClick {
+    private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseUser user = mFirebaseAuth.getCurrentUser();
+    private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("kidsApp");
+
+    private TextView averageHeart;
+    private TextView totalStepcount;
+    private TextView averageLevel;
+
     FragmentActivity intent = getActivity();
     //달력 부분
     TextView yearMonthText;
@@ -44,11 +60,14 @@ public class Frag3 extends Fragment implements OnItemClick{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        averageHeart = (TextView)getView().findViewById(R.id.day_heart);
+        averageLevel = (TextView)getView().findViewById(R.id.day_level);
+        totalStepcount = (TextView)getView().findViewById(R.id.day_stepcount);
 
-        yearMonthText = (TextView)getView().findViewById(R.id.text_yearMonth);
-        ImageButton preBtn = (ImageButton)getView().findViewById(R.id.btn_pre);
-        ImageButton nextBtn = (ImageButton)getView().findViewById(R.id.btn_next);
-        recyclerView = (RecyclerView)getView().findViewById(R.id.recyclerView);
+        yearMonthText = (TextView) getView().findViewById(R.id.text_yearMonth);
+        ImageButton preBtn = (ImageButton) getView().findViewById(R.id.btn_pre);
+        ImageButton nextBtn = (ImageButton) getView().findViewById(R.id.btn_next);
+        recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
 
         //current date
         CalendarUtil.selectedDate = Calendar.getInstance();
@@ -63,7 +82,7 @@ public class Frag3 extends Fragment implements OnItemClick{
             @Override
             public void onClick(View v) {
                 //현재 월 -1 변수에 담기
-                CalendarUtil.selectedDate.add(Calendar.MONTH,-1);//-1
+                CalendarUtil.selectedDate.add(Calendar.MONTH, -1);//-1
                 setMonthView();
             }
         });
@@ -73,33 +92,32 @@ public class Frag3 extends Fragment implements OnItemClick{
             @Override
             public void onClick(View v) {
                 //현재 월+1 변수에 담기
-                CalendarUtil.selectedDate.add(Calendar.MONTH,1);
+                CalendarUtil.selectedDate.add(Calendar.MONTH, 1);
                 setMonthView();
             }
         });
     }
 
 
-
     //날짜 타입 설정
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private String monthYearFromDate(Calendar calendar){
+    private String monthYearFromDate(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH)+1;
+        int month = calendar.get(Calendar.MONTH) + 1;
         //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM월");
-        String monthYear = year + "년 " + month + "월" ;
+        String monthYear = year + "년 " + month + "월";
         return monthYear;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private String yearMonthFromDate(LocalDate date){
+    private String yearMonthFromDate(LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월");
         return date.format(formatter);
     }
 
     //화면 설정
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void setMonthView(){
+    private void setMonthView() {
         //년월 텍스트뷰 셋팅
         yearMonthText.setText(monthYearFromDate(CalendarUtil.selectedDate));
         //해당 월 날짜 가져오기
@@ -115,10 +133,45 @@ public class Frag3 extends Fragment implements OnItemClick{
         //날짜 클릭 되었을때
 
     }
+
+    //클릭시 데이터 불러오는 이벤트
     @Override
-    public void onClick(String value){
+    public void onClick(String value) {
+        String date = "2023-04-" + value;
+        System.out.println(date);
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(date).child("averageHeart").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                averageHeart.setText(snapshot.getValue().toString());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(date).child("totalStepCount").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                totalStepcount.setText(snapshot.getValue().toString());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(date).child("averageHeart").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                averageHeart.setText(snapshot.toString());
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
         System.out.println(value);
     }
+
     //날짜 생성
     @RequiresApi(api = Build.VERSION_CODES.O)
     private ArrayList<Date> daysInMonthArray(){

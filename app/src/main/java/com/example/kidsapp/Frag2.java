@@ -106,17 +106,17 @@ public class Frag2 extends Fragment {
         //전에 기록되어있던 날짜 읽어오기
         //if()
 
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s1);//setValue("x: -0.01, y: -0.01, z: 0.05");
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s2);//setValue("x: -0.01, y: -0.01, z: 0.05");
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue("x: -0.05, y: -0.04, z: 0.03");
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s1);//setValue("x: -0.01, y: -0.01, z: 0.05");
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s2);//setValue("x: -0.01, y: -0.01, z: 0.05");
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).setValue("x: -0.05, y: -0.04, z: 0.03");
 
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).child("data").push().setValue(new SensorData(120,t));
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).child("data").push().setValue(new SensorData(132,t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).child("data").push().setValue(new SensorData(80,t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).child("data").push().setValue(new SensorData(102,t));
 //        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).push().setValue(new SensorData(120, t));
 //        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).push().setValue(new SensorData(123,t));
 
         mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(2, t));
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(1,t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(1,t));
 //        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(2, t));
 //        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(1,t));
         //mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue(sensor);

@@ -115,6 +115,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
                 String day = holder.dayText.getText().toString();
                 System.out.println(day);
                 mCallback.onClick(day);
+                v.setBackgroundColor(Color.YELLOW);
 //                Intent clickIntent = new Intent(context, Frag3.class ); //Frag3.class부분에 원하는 화면 연결
 //                clickIntent.putExtra("day", day); //변수값 intent로 넘기기
 //                context.startActivity(clickIntent);
