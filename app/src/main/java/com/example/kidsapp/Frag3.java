@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Frag3 extends Fragment implements OnItemClick {
+
     private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     private FirebaseUser user = mFirebaseAuth.getCurrentUser();
     private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("kidsApp");
@@ -137,7 +138,7 @@ public class Frag3 extends Fragment implements OnItemClick {
     //클릭시 데이터 불러오는 이벤트
     @Override
     public void onClick(String value) {
-        String date = "2023-04-" + value;
+        String date = "2023-05-" + value;
         System.out.println(date);
         mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(date).child("averageHeart").addValueEventListener(new ValueEventListener() {
             @Override
