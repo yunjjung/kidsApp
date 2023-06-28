@@ -51,13 +51,16 @@ public class Frag2 extends Fragment {
 //    private TextView heart;
     private Intent intent;//intent 선언
     private TextView avg_heart;
-    private TextView stepCount;
+    private TextView avg_level;
     private TextView totalStepCount;
     private View view;
     private LineChart chart_gyro;
     private LineChart chart_heart;
     float todayHeart=0;
+    float averageLevel=0;
     ArrayList<Entry> heartArr = new ArrayList<>();//데이터를 담을 리스트
+
+    ArrayList<Entry> accArr = new ArrayList<>();//데이터를 담을 리스트
     private LineChart chart_stepCount;
     ArrayList<Entry> stepCountArr = new ArrayList<>();//데이터를 담을 리스트
     int todayStepCount = 0;
@@ -293,6 +296,7 @@ public class Frag2 extends Fragment {
                     todayHeart = todayHeart + data;
                     Log.w("data create 얌", heartArr + "생성");
                 }
+                Log.w("heart average", todayHeart+"d");
                 LineDataSet heartSet; //데이터셋에 데이터 넣기
                 heartSet = new LineDataSet(heartArr, "Heart");//데이터가 담긴 리스트를 LineDataSet으로 변환.
 
@@ -315,6 +319,7 @@ public class Frag2 extends Fragment {
                 heartSet.setCircleColor(Color.BLACK);
 
 
+                Log.w("심박수", todayHeart+"나누기 전");
                 //심박수 평균 구하기
                 todayHeart = todayHeart / snapshot.getChildrenCount();
                 Log.w("child", snapshot.getChildrenCount() + "di" + todayHeart);
@@ -359,46 +364,52 @@ public class Frag2 extends Fragment {
 
 
 
-        ///가속도 y가 6이하면 level 1로 표시
+        ///가속도 y가 4이하면 level 1로 표시
+        //TODO 계속 돌아가는 이유 찾기
         chart_gyro = (LineChart) getActivity().findViewById(R.id.chart_gyro);
         mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("accelerometer").child(today.format(form)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot sensorData : snapshot.getChildren()) {
-                    Log.w("data create", "생성");
-                    Log.w("자", sensorData.child("x") + "hu");
-                    Log.w("이", sensorData.child("y") + "hu");
-                    Log.w("로", sensorData.child("z").getValue() + "h");
-                    if(sensorData.child("data").getValue()==null)break;
+//                    Log.w("data create", "생성");
+//                    Log.w("자", sensorData.child("x") + "hu");
+//                    Log.w("이", sensorData.child("y") + "hu");
+//                    Log.w("로", sensorData.child("z").getValue() + "h");
+                    if(sensorData.child("y").getValue()==null)break;
                     float data = Float.parseFloat(sensorData.child("y").getValue().toString());
-                    //if(data == 0.0) break;
+                    if(data < 4){
+                        data = 1;
+                    }
+                    else data = 4;
                     i++;
-                    todayStepCount = todayStepCount + (int) data;
-                    stepCountArr.add(new Entry(i, todayStepCount));
-                    Log.w("data create 얌", stepCountArr + "생성");
+                    Log.w("level", data+"why");
+                    accArr.add(new Entry(i, data));
+                    averageLevel = averageLevel + data;
+                    Log.w("data create 얌", accArr + "생성");
                 }
-                LineDataSet stepCountSet;
-                stepCountSet = new LineDataSet(stepCountArr, "stepCount");//데이터가 담긴 리스트를 LineDataSet으로 변환.
+                LineDataSet accSet;
+                accSet = new LineDataSet(accArr, "Level");//데이터가 담긴 리스트를 LineDataSet으로 변환.
 
-                ArrayList<LineDataSet> stepCountDataSets = new ArrayList<>();
-                stepCountDataSets.add(stepCountSet);
+                ArrayList<LineDataSet> accDataSets = new ArrayList<>();
+                accDataSets.add(accSet);
 
-                LineData data3 = new LineData(); //차트에 담길 데이터
+                LineData acc = new LineData(); //차트에 담길 데이터
 
-                data3.addDataSet(stepCountSet);
+                acc.addDataSet(accSet);
 
-                chart_gyro.setData(data3);
+                chart_gyro.setData(acc);
 
-                chart_stepCount.invalidate();//차트 업데이트
-                chart_stepCount.setTouchEnabled(false); //차트 터치 disable
+                chart_gyro.invalidate();//차트 업데이트
+                chart_gyro.setTouchEnabled(false); //차트 터치 disable
 
-                stepCountSet.setColor(Color.BLACK);
-                stepCountSet.setCircleColor(Color.BLACK);
+                accSet.setColor(Color.BLACK);
+                accSet.setCircleColor(Color.BLACK);
 
-                //총 걸음 수 표시
-                totalStepCount = (TextView)getActivity().findViewById(R.id.total_stepCount);
-                totalStepCount.setText(String.valueOf(todayStepCount));
-                mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("totalStepCount").setValue(todayStepCount);
+                //총 레벨 수 구하기
+                avg_level = (TextView)getActivity().findViewById(R.id.avg_level);
+                averageLevel = averageLevel / snapshot.getChildrenCount();
+                avg_level.setText(String.valueOf(averageLevel));
+                mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("accelerometer").child(today.format(form)).child("avgLevel").setValue(0);
 
 
             }
@@ -441,57 +452,60 @@ public class Frag2 extends Fragment {
 //
 //
          //걸음수 센서
-        chart_stepCount = (LineChart) getActivity().findViewById(R.id.chart_stepCount);
-
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot sensorData : snapshot.getChildren()) {
-                    Log.w("data create", "생성");
-                    Log.w("걸음수", sensorData + "hu");
-                    Log.w("걸음수", sensorData.child("data") + "hu");
-                    Log.w("걸음", sensorData.child("data").getValue() + "h");
-                    if(sensorData.child("data").getValue()==null)break;
-                    float data = Float.parseFloat(sensorData.child("data").getValue().toString());
-                    //if(data == 0.0) break;
-                    i++;
-                    todayStepCount = todayStepCount + (int) data;
-                    stepCountArr.add(new Entry(i, todayStepCount));
-                    Log.w("data create 얌", stepCountArr + "생성");
-                }
-                LineDataSet stepCountSet;
-                stepCountSet = new LineDataSet(stepCountArr, "stepCount");//데이터가 담긴 리스트를 LineDataSet으로 변환.
-
-                ArrayList<LineDataSet> stepCountDataSets = new ArrayList<>();
-                stepCountDataSets.add(stepCountSet);
-
-                LineData data3 = new LineData(); //차트에 담길 데이터
-
-                data3.addDataSet(stepCountSet);
-
-                chart_stepCount.setData(data3);
-
-                chart_stepCount.invalidate();//차트 업데이트
-                chart_stepCount.setTouchEnabled(false); //차트 터치 disable
-
-                stepCountSet.setColor(Color.BLACK);
-                stepCountSet.setCircleColor(Color.BLACK);
-
-                //총 걸음 수 표시
-                totalStepCount = (TextView)getActivity().findViewById(R.id.total_stepCount);
-                totalStepCount.setText(String.valueOf(todayStepCount));
-                mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("totalStepCount").setValue(todayStepCount);
-
-
-            }
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("heart data read fail", error.toException() + " 힝");
-
-            }
-        });
+//        chart_stepCount = (LineChart) getActivity().findViewById(R.id.chart_stepCount);
+//
+//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                int cnt = 0;
+//                for (DataSnapshot sensorData : snapshot.getChildren()) {
+//                    if(cnt==15)break;
+//                    Log.w("data create", "생성");
+//                    Log.w("걸음수", sensorData + "hu");
+//                    Log.w("걸음수", sensorData.child("data") + "hu");
+//                    Log.w("걸음", sensorData.child("data").getValue() + "h");
+//                    if(sensorData.child("data").getValue()==null)break;
+//                    float data = Float.parseFloat(sensorData.child("data").getValue().toString());
+//                    if(data == 0.0) break;
+//                    i++;
+//                    cnt++;
+//                    todayStepCount = todayStepCount + (int)data/100;
+//                    stepCountArr.add(new Entry(i, todayStepCount));
+//                    Log.w("data create 얌", stepCountArr + "생성");
+//                }
+//                LineDataSet stepCountSet;
+//                stepCountSet = new LineDataSet(stepCountArr, "stepCount");//데이터가 담긴 리스트를 LineDataSet으로 변환.
+//
+//                ArrayList<LineDataSet> stepCountDataSets = new ArrayList<>();
+//                stepCountDataSets.add(stepCountSet);
+//
+//                LineData data3 = new LineData(); //차트에 담길 데이터
+//
+//                data3.addDataSet(stepCountSet);
+//
+//                chart_stepCount.setData(data3);
+//
+//                chart_stepCount.invalidate();//차트 업데이트
+//                chart_stepCount.setTouchEnabled(false); //차트 터치 disable
+//
+//                stepCountSet.setColor(Color.BLACK);
+//                stepCountSet.setCircleColor(Color.BLACK);
+//
+//                //총 걸음 수 표시
+//                totalStepCount = (TextView)getActivity().findViewById(R.id.total_stepCount);
+//                totalStepCount.setText(String.valueOf(todayStepCount));
+//                mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("totalStepCount").setValue(todayStepCount);
+//
+//
+//            }
+//
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.e("heart data read fail", error.toException() + " 힝");
+//
+//            }
+//        });
 
         //        ArrayList<Entry> entry_chart1 = new ArrayList<>(); // 데이터를 담을 Arraylist
 //        ArrayList<Entry> entry_chart2 = new ArrayList<>();
