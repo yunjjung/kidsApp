@@ -58,6 +58,9 @@ public class Frag2 extends Fragment {
     private LineChart chart_heart;
     float todayHeart=0;
     float averageLevel=0;
+    //평균 계산을 위한 count
+    int l4 = 0;
+    int l1=0;
     ArrayList<Entry> heartArr = new ArrayList<>();//데이터를 담을 리스트
 
     ArrayList<Entry> accArr = new ArrayList<>();//데이터를 담을 리스트
@@ -93,11 +96,6 @@ public class Frag2 extends Fragment {
         avg_heart = (TextView) getActivity().findViewById(R.id.avg_heart);
         //gyro = (TextView) getActivity().findViewById(R.id.read_gyro);
 
-//        SensorData sensor = new SensorData();
-//        sensor.setGyro("x: -0.01, y: -0.01, z: 0.05");
-//        sensor.setHeart(128);
-//        sensor.setStepCount(73);
-
 
         Log.w("시간", Ktime + "시");
         Log.w("s시간", s + "시");
@@ -108,22 +106,27 @@ public class Frag2 extends Fragment {
 
 
         //전에 기록되어있던 날짜 읽어오기
-        //if()
 
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s1);//setValue("x: -0.01, y: -0.01, z: 0.05");
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s2);//setValue("x: -0.01, y: -0.01, z: 0.05");
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).setValue("x: -0.05, y: -0.04, z: 0.03");
-//
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).child("data").push().setValue(new SensorData(80,t));
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).child("data").push().setValue(new SensorData(102,t));
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).push().setValue(new SensorData(120, t));
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).push().setValue(new SensorData(123,t));
-//
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(2, t));
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(1,t));
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(2, t));
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(1,t));
-        //mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(time).setValue(sensor);
+        //mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s1);//setValue("x: -0.01, y: -0.01, z: 0.05");
+        //mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(today.format(form)).child("sensor").push().setValue(s2);//setValue("x: -0.01, y: -0.01, z: 0.05");
+        //mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("accelerometer").child(today.format(form)).child("data").push().setValue(new ThSensorData(0,2,4));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("accelerometer").child(today.format(form)).child("data").push().setValue(new ThSensorData(0,2,0));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("accelerometer").child(today.format(form)).child("data").push().setValue(new ThSensorData(0,3,4));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("accelerometer").child(today.format(form)).child("data").push().setValue(new ThSensorData(0,6,3));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("accelerometer").child(today.format(form)).child("data").push().setValue(new ThSensorData(0,6,3));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("accelerometer").child(today.format(form)).child("data").push().setValue(new ThSensorData(0,6,2));
+        //mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("accelerometer").child(today.format(form)).child("data").push().setValue(new ThSensorData(6,4,1));
+        //mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("accelerometer").child(today.format(form)).child("data").push().setValue(new ThSensorData(6,5,2));
+
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).child("data").push().setValue(new SensorData(80, t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).child("data").push().setValue(new SensorData(102, t));
+        //mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).push().setValue(new SensorData(120, t));
+        //mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(time).push().setValue(new SensorData(123,t));
+
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(2, t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(1, t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(2, t));
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").push().setValue(new SensorData(1, t));
         //데이터 읽기
 //        mDatabaseRef.child("SensorDatas").child("test22").addValueEventListener(new ValueEventListener() {
 //            @Override
@@ -140,7 +143,7 @@ public class Frag2 extends Fragment {
 
         //심박수 센서
 
-        //초기화화
+        //초기화
         chart_heart = (LineChart) getActivity().findViewById(R.id.chart_heart);
 
         Log.w("tag", "통과");
@@ -277,9 +280,11 @@ public class Frag2 extends Fragment {
 //
 //            }
         //================기존의 mung===========================
+
+
         Log.w("data create before", "생성");
         System.out.println(today.format(form));
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).addValueEventListener(new ValueEventListener() {
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).child("data").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.w("data create", "들어는 왔다 for문 문제임");
@@ -287,16 +292,17 @@ public class Frag2 extends Fragment {
                 Log.w("child 값", snapshot.getChildren() + "이거 맞아?");
                 for (DataSnapshot sensorData : snapshot.getChildren()) {
                     Log.w("data create", "생성");
-                    Log.w("hh", sensorData.child("data") + "hu");
-                    Log.w("htht", sensorData.child("data").getValue() + "h");
-                    float data = Float.parseFloat(sensorData.child("data").getValue().toString());
-                    if (data == 0.0) break;
+                    Log.w("hh", sensorData.child("sensor") + "hu");
+                    Log.w("htht", sensorData.child("sensor").getValue() + "h");
+                    if (sensorData.child("sensor").getValue() == null) break;
+                    float data = Float.parseFloat(sensorData.child("sensor").getValue().toString());
+                    //if (data == 0.0) break;
                     i++;
                     heartArr.add(new Entry(i, data));
                     todayHeart = todayHeart + data;
                     Log.w("data create 얌", heartArr + "생성");
                 }
-                Log.w("heart average", todayHeart+"d");
+                Log.w("heart average", todayHeart + "d");
                 LineDataSet heartSet; //데이터셋에 데이터 넣기
                 heartSet = new LineDataSet(heartArr, "Heart");//데이터가 담긴 리스트를 LineDataSet으로 변환.
 
@@ -319,11 +325,15 @@ public class Frag2 extends Fragment {
                 heartSet.setCircleColor(Color.BLACK);
 
 
-                Log.w("심박수", todayHeart+"나누기 전");
+                Log.w("심박수", todayHeart + "나누기 전");
                 //심박수 평균 구하기
-                todayHeart = todayHeart / snapshot.getChildrenCount();
-                Log.w("child", snapshot.getChildrenCount() + "di" + todayHeart);
-                avg_heart.setText(String.valueOf(todayHeart));
+                if (todayHeart == 0.0) {
+                    avg_heart.setText("NaN");
+                } else {
+                    todayHeart = todayHeart / snapshot.getChildrenCount();
+                    Log.w("child", snapshot.getChildrenCount() + "di" + todayHeart);
+                    avg_heart.setText(String.valueOf(todayHeart));
+                }
 
                 //그날의 심박수 평균 저장 (.push빼서 덮어쓰기 가능하게!)
                 mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(today.format(form)).child("averageHeart").setValue(todayHeart);
@@ -363,11 +373,11 @@ public class Frag2 extends Fragment {
         heartSet.setCircleColor(Color.BLACK);
 
 
-
         ///가속도 y가 4이하면 level 1로 표시
         //TODO 계속 돌아가는 이유 찾기
         chart_gyro = (LineChart) getActivity().findViewById(R.id.chart_gyro);
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("accelerometer").child(today.format(form)).addValueEventListener(new ValueEventListener() {
+
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("accelerometer").child(today.format(form)).child("data").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot sensorData : snapshot.getChildren()) {
@@ -375,16 +385,24 @@ public class Frag2 extends Fragment {
 //                    Log.w("자", sensorData.child("x") + "hu");
 //                    Log.w("이", sensorData.child("y") + "hu");
 //                    Log.w("로", sensorData.child("z").getValue() + "h");
-                    if(sensorData.child("y").getValue()==null)break;
+                    if (sensorData.child("y").getValue() == null) break;
                     float data = Float.parseFloat(sensorData.child("y").getValue().toString());
-                    if(data < 4){
+                    if (data < 4) {
                         data = 1;
+                        l1++;
+                    } else {
+                        data = 4;
+                        l4++;
                     }
-                    else data = 4;
                     i++;
-                    Log.w("level", data+"why");
+                    Log.w("level", data + "why");
                     accArr.add(new Entry(i, data));
-                    averageLevel = averageLevel + data;
+                    if (l4 > l1) {
+                        averageLevel = 4;
+                    } else {
+                        averageLevel = 1;
+                    }
+
                     Log.w("data create 얌", accArr + "생성");
                 }
                 LineDataSet accSet;
@@ -405,20 +423,22 @@ public class Frag2 extends Fragment {
                 accSet.setColor(Color.BLACK);
                 accSet.setCircleColor(Color.BLACK);
 
-                //총 레벨 수 구하기
-                avg_level = (TextView)getActivity().findViewById(R.id.avg_level);
-                averageLevel = averageLevel / snapshot.getChildrenCount();
+                //평균 레벨 구하기(최다 빈도로)
+                avg_level = (TextView) getActivity().findViewById(R.id.avg_level);
+                //averageLevel = averageLevel / snapshot.getChildrenCount();
                 avg_level.setText(String.valueOf(averageLevel));
                 mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("accelerometer").child(today.format(form)).child("avgLevel").setValue(0);
 
 
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("heart data read fail", error.toException() + " 힝");
 
             }
         });
+
 
 
 //        //자이로 센서
@@ -452,60 +472,60 @@ public class Frag2 extends Fragment {
 //
 //
          //걸음수 센서
-//        chart_stepCount = (LineChart) getActivity().findViewById(R.id.chart_stepCount);
-//
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                int cnt = 0;
-//                for (DataSnapshot sensorData : snapshot.getChildren()) {
-//                    if(cnt==15)break;
-//                    Log.w("data create", "생성");
-//                    Log.w("걸음수", sensorData + "hu");
-//                    Log.w("걸음수", sensorData.child("data") + "hu");
-//                    Log.w("걸음", sensorData.child("data").getValue() + "h");
-//                    if(sensorData.child("data").getValue()==null)break;
-//                    float data = Float.parseFloat(sensorData.child("data").getValue().toString());
-//                    if(data == 0.0) break;
-//                    i++;
-//                    cnt++;
-//                    todayStepCount = todayStepCount + (int)data/100;
-//                    stepCountArr.add(new Entry(i, todayStepCount));
-//                    Log.w("data create 얌", stepCountArr + "생성");
-//                }
-//                LineDataSet stepCountSet;
-//                stepCountSet = new LineDataSet(stepCountArr, "stepCount");//데이터가 담긴 리스트를 LineDataSet으로 변환.
-//
-//                ArrayList<LineDataSet> stepCountDataSets = new ArrayList<>();
-//                stepCountDataSets.add(stepCountSet);
-//
-//                LineData data3 = new LineData(); //차트에 담길 데이터
-//
-//                data3.addDataSet(stepCountSet);
-//
-//                chart_stepCount.setData(data3);
-//
-//                chart_stepCount.invalidate();//차트 업데이트
-//                chart_stepCount.setTouchEnabled(false); //차트 터치 disable
-//
-//                stepCountSet.setColor(Color.BLACK);
-//                stepCountSet.setCircleColor(Color.BLACK);
-//
-//                //총 걸음 수 표시
-//                totalStepCount = (TextView)getActivity().findViewById(R.id.total_stepCount);
-//                totalStepCount.setText(String.valueOf(todayStepCount));
-//                mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("totalStepCount").setValue(todayStepCount);
-//
-//
-//            }
-//
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.e("heart data read fail", error.toException() + " 힝");
-//
-//            }
-//        });
+        chart_stepCount = (LineChart) getActivity().findViewById(R.id.chart_stepCount);
+
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("data").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int cnt = 0;
+                for (DataSnapshot sensorData : snapshot.getChildren()) {
+                    if(cnt==15)break;
+                    Log.w("data create", "생성");
+                    Log.w("걸음수", sensorData + "hu");
+                    Log.w("걸음수", sensorData.child("data") + "hu");
+                    Log.w("걸음", sensorData.child("data").getValue() + "h");
+                    if(sensorData.child("data").getValue()==null)break;
+                    float data = Float.parseFloat(sensorData.child("sensor").getValue().toString());
+                    if(data == 0.0) break;
+                    i++;
+                    cnt++;
+                    todayStepCount = todayStepCount + (int)data/100;
+                    stepCountArr.add(new Entry(i, todayStepCount));
+                    Log.w("data create 얌", stepCountArr + "생성");
+                }
+                LineDataSet stepCountSet;
+                stepCountSet = new LineDataSet(stepCountArr, "stepCount");//데이터가 담긴 리스트를 LineDataSet으로 변환.
+
+                ArrayList<LineDataSet> stepCountDataSets = new ArrayList<>();
+                stepCountDataSets.add(stepCountSet);
+
+                LineData data3 = new LineData(); //차트에 담길 데이터
+
+                data3.addDataSet(stepCountSet);
+
+                chart_stepCount.setData(data3);
+
+                chart_stepCount.invalidate();//차트 업데이트
+                chart_stepCount.setTouchEnabled(false); //차트 터치 disable
+
+                stepCountSet.setColor(Color.BLACK);
+                stepCountSet.setCircleColor(Color.BLACK);
+
+                //총 걸음 수 표시
+                totalStepCount = (TextView)getActivity().findViewById(R.id.total_stepCount);
+                totalStepCount.setText(String.valueOf(todayStepCount));
+                mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(today.format(form)).child("totalStepCount").setValue(todayStepCount);
+
+
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("heart data read fail", error.toException() + " 힝");
+
+            }
+        });
 
         //        ArrayList<Entry> entry_chart1 = new ArrayList<>(); // 데이터를 담을 Arraylist
 //        ArrayList<Entry> entry_chart2 = new ArrayList<>();
@@ -542,6 +562,7 @@ public class Frag2 extends Fragment {
 //        lineChart.invalidate(); // 차트 업데이트
 //        lineChart.setTouchEnabled(false); // 차트 터치 disable
 //
-    }
+
+        }
 
 }
