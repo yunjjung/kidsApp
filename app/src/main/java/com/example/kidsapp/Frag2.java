@@ -482,9 +482,9 @@ public class Frag2 extends Fragment {
                     if(cnt==15)break;
                     Log.w("data create", "생성");
                     Log.w("걸음수", sensorData + "hu");
-                    Log.w("걸음수", sensorData.child("data") + "hu");
-                    Log.w("걸음", sensorData.child("data").getValue() + "h");
-                    if(sensorData.child("data").getValue()==null)break;
+                    Log.w("걸음수", sensorData.child("sensor") + "hu");
+                    Log.w("걸음", sensorData.child("sensor").getValue().toString() + "h");
+                    if(sensorData.child("sensor").getValue().toString()==null)break;
                     float data = Float.parseFloat(sensorData.child("sensor").getValue().toString());
                     if(data == 0.0) break;
                     i++;
