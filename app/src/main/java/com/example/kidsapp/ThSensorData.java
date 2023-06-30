@@ -1,22 +1,25 @@
 package com.example.kidsapp;
 //x,y,z 축이 있는 센서 데이터 들을 위한 클래스
 public class ThSensorData {
-    private float X;
+    private float x;
     private float y;
     private float z;
 
     public ThSensorData(){};
 
     public ThSensorData(float x, float y, float z){
+        this.x = x;
+        this.y = y;
+        this.z = z;
 
     }
 
     public float getX() {
-        return X;
+        return x;
     }
 
     public void setX(float x) {
-        X = x;
+        x = x;
     }
 
     public float getY() {
