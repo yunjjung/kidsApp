@@ -3,6 +3,7 @@ package com.example.kidsapp;
 //import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.core.Tag;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -138,12 +140,24 @@ public class Frag3 extends Fragment implements OnItemClick {
     //클릭시 데이터 불러오는 이벤트
     @Override
     public void onClick(String value) {
-        String date = "2023-05-" + value;
-        System.out.println(date);
-        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(date).child("averageHeart").addValueEventListener(new ValueEventListener() {
+        int currentY = CalendarUtil.selectedDate.get(Calendar.YEAR);
+        int currentM = CalendarUtil.selectedDate.get(Calendar.MONTH)+1;
+        String date = currentY+"-"+currentM+"-" + value;
+        Log.i("Date",date +"날짜");
+
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(date).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                averageHeart.setText(snapshot.getValue().toString());
+            public void onDataChange(DataSnapshot snapshot) {
+                Log.i("heet",user.getUid());
+                Log.i("heart", snapshot.getChildren().iterator().toString());
+                if(snapshot.getValue() == null) {
+                    averageHeart.setText("NaN");
+                }
+                else{
+                    Log.i("check", snapshot.toString());
+                    averageHeart.setText(snapshot.getValue().toString());
+
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -153,23 +167,39 @@ public class Frag3 extends Fragment implements OnItemClick {
         mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("stepCount").child(date).child("totalStepCount").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                totalStepcount.setText(snapshot.getValue().toString());
+                if(snapshot.getValue() == null) {
+                    totalStepcount.setText("NaN");
+                }
+                else{
+                    Log.i("check", snapshot.toString());
+                    totalStepcount.setText(snapshot.getValue().toString());
+
+                }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-//        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("heart").child(date).child("averageHeart").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                averageHeart.setText(snapshot.toString());
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("SensorData").child("gyro").child(date).child("averageLevel").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.getValue() == null) {
+                    averageLevel.setText("NaN");
+                }
+                else{
+                    Log.i("check", snapshot.toString());
+                    averageLevel.setText(snapshot.toString());
+                }
+
+                }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         System.out.println(value);
     }
 
